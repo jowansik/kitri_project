@@ -3,27 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackState : IState
-{
-    //private Enemy parent;
-    //private Coroutine coroutine;
-    //private AnimatorStateInfo animatorStateInfo;
-
-    private float normalizedTime;
+{    private float normalizedTime;
 
     public override void Enter(Enemy _parent)
     {
         parent = _parent;
-
-        parent.Animator.SetBool("IsAttacking", true);
-
+        
         coroutine = parent.StartCoroutine(CheckMobState());
     }
 
     public override void Exit()
     {
-        parent.StopCoroutine(coroutine);
-
-        parent.Animator.SetBool("IsAttacking", false);
+        parent.StopCoroutine(coroutine);        
     }
 
     public override void Update()
@@ -54,7 +45,7 @@ public class AttackState : IState
 
             if (dist > parent.attackRange)
             {
-                parent.AI.ChangeState(EEnemyState.State_Idle);
+                parent.AI.Idle();
             }
         }
     }

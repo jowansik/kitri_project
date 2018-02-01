@@ -4,18 +4,12 @@ using UnityEngine;
 
 public class StunState : IState
 {
-    //private Enemy parent;
-    //private Coroutine coroutine;
-    //private AnimatorStateInfo animatorStateInfo;
-
     private Quaternion preRotation;
 
     public override void Enter(Enemy _parent)
     {
         parent = _parent;
         
-        parent.Animator.SetTrigger("IsStunned");
-
         preRotation = parent.transform.rotation;
 
         coroutine = parent.StartCoroutine(CheckMobState());
@@ -35,7 +29,7 @@ public class StunState : IState
         animatorStateInfo = parent.Animator.GetCurrentAnimatorStateInfo(0); // LayerMask 사용 불가?
 
         if (animatorStateInfo.normalizedTime >= 0.8f)
-            parent.AI.ChangeState(EEnemyState.State_Idle);
+            parent.AI.Idle();
     }
 
     public override IEnumerator CheckMobState()

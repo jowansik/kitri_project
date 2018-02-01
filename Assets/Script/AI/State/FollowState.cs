@@ -4,18 +4,13 @@ using UnityEngine;
 
 public class FollowState : IState
 {
-    //private Enemy parent;
-    //private Coroutine coroutine;
-    
     public override void Enter(Enemy _parent)
     {
         parent = _parent;
 
         parent.NavAgent.SetDestination(parent.PlayerTR.position);
         parent.NavAgent.isStopped = false;
-
-        parent.Animator.SetBool("IsTracing", true);
-
+        
         coroutine = parent.StartCoroutine(CheckMobState());
     }
 
@@ -24,9 +19,7 @@ public class FollowState : IState
         parent.NavAgent.SetDestination(Vector3.zero);
         parent.NavAgent.isStopped = true;
 
-        parent.StopCoroutine(coroutine);
-
-        parent.Animator.SetBool("IsTracing", false);
+        parent.StopCoroutine(coroutine);        
     }
 
     public override void Update()
@@ -54,7 +47,7 @@ public class FollowState : IState
             }
             else
             {
-                parent.AI.ChangeState(EEnemyState.State_Idle);
+                parent.AI.Idle();
             }
         }
     }

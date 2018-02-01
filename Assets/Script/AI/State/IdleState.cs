@@ -4,27 +4,31 @@ using UnityEngine;
 
 public class IdleState : IState
 {
-    //private Enemy parent;
-    //private Coroutine coroutine;
-    
+    private float idleTime;
+
     public override void Enter(Enemy _parent)
     {
+        idleTime = 0f;
+
         parent = _parent;
-
-        parent.Animator.SetBool("IsIdle", true);
-
+        
         coroutine = parent.StartCoroutine(CheckMobState());
     }
 
     public override void Exit()
     {
-        parent.StopCoroutine(coroutine);
-
-        parent.Animator.SetBool("IsIdle", false);
+        parent.StopCoroutine(coroutine);        
     }
 
     public override void Update()
     {
+        idleTime += Time.deltaTime;
+
+        if (idleTime > parent.wanderingTime)
+        {
+            idleTime = 0f;
+            parent.AI.Wander();
+        }
     }
 
     public override IEnumerator CheckMobState()
@@ -37,12 +41,12 @@ public class IdleState : IState
             
             if (dist <= parent.attackRange)
             {
-                parent.AI.ChangeState(EEnemyState.State_Attack);
+                parent.AI.Attack();
             }
 
             else if (dist < parent.aggroRadius)
             {
-                parent.AI.ChangeState(EEnemyState.State_Follow);
+                parent.AI.Follow();
             }
         }
     }

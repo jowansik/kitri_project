@@ -10,7 +10,8 @@ public class Enemy : Actor
     public float aggroRadius;
     public float maxAggroRadius;
     public float attackRange;
-    public float RecoveryTime;
+    public float recoveryTime;
+    public float wanderingTime;
 
     private bool life = true;
     private Transform mobTR;

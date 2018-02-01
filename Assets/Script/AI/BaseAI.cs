@@ -24,7 +24,7 @@ public class BaseAI
         currentState.Update();
     }
 
-    public void ChangeState(EEnemyState eState)
+    private void ChangeState(EEnemyState eState)
     {
         IState newState = EnemyManager.Instance.GetState(eState);
 
@@ -42,7 +42,7 @@ public class BaseAI
         ChangeAnimation(eState);
     }
 
-    public void ChangeAnimation(EEnemyState enemyState)
+    private void ChangeAnimation(EEnemyState enemyState)
     {
         enemy.Animator.SetInteger("State", (int)enemyState);
     }
