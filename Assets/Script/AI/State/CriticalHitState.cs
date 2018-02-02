@@ -8,7 +8,7 @@ public class CriticalHitState : IState
     {
         parent = _parent;
 
-        coroutine = parent.StartCoroutine(CheckMobState());
+        coroutine = parent.StartCoroutine(CheckMobState());        
     }
 
     public override void Exit()
@@ -26,6 +26,9 @@ public class CriticalHitState : IState
         while (parent.Life == true)
         {
             yield return new WaitForSeconds(0.2f);
+
+            if (animatorStateInfo.normalizedTime >= 0.9f)
+                parent.AI.Idle();
         }
-    }
+    }        
 }

@@ -1581,7 +1581,7 @@ Animator:
   m_GameObject: {fileID: 1872841516047038}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 320b1c2af77554f99a1658df4a6d3d5c, type: 3}
-  m_Controller: {fileID: 9100000, guid: 71b4bfefd5b8ff54b89cee06180f7d68, type: 2}
+  m_Controller: {fileID: 9100000, guid: ed343728185067542bc3d36240f8b2e2, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -1616,10 +1616,12 @@ MonoBehaviour:
   MoveSpeed: 2
   ListAttackColliders: []
   type: 0
+  meleeAttackRange: 2
+  recoveryTime: 2
   aggroRadius: 5
   maxAggroRadius: 10
-  attackRange: 2
-  RecoveryTime: 3
+  wanderingTime: 2
+  reloadTime: 0
 --- !u!114 &114822362810452756
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -770,7 +770,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1915679548054496
 GameObject:
   m_ObjectHideFlags: 1
@@ -1581,7 +1581,7 @@ Animator:
   m_GameObject: {fileID: 1888317436358296}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 320b1c2af77554f99a1658df4a6d3d5c, type: 3}
-  m_Controller: {fileID: 9100000, guid: 6b2b2359dddbe9749a92d1cd7990fe02, type: 2}
+  m_Controller: {fileID: 9100000, guid: ed343728185067542bc3d36240f8b2e2, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -1604,10 +1604,12 @@ MonoBehaviour:
   MoveSpeed: 2
   ListAttackColliders: []
   type: 1
+  meleeAttackRange: 2
+  recoveryTime: 2
   aggroRadius: 5
   maxAggroRadius: 10
-  attackRange: 2
-  RecoveryTime: 3
+  wanderingTime: 2
+  reloadTime: 2
 --- !u!114 &114261265506567252
 MonoBehaviour:
   m_ObjectHideFlags: 1

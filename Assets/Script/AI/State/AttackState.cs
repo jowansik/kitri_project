@@ -43,7 +43,7 @@ public class AttackState : IState
 
             float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
 
-            if (dist > parent.attackRange)
+            if (dist > parent.meleeAttackRange)
             {
                 parent.AI.Idle();
             }

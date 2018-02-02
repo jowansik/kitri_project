@@ -11,13 +11,14 @@ public class IdleState : IState
         idleTime = 0f;
 
         parent = _parent;
-        
+
         coroutine = parent.StartCoroutine(CheckMobState());
     }
 
     public override void Exit()
     {
-        parent.StopCoroutine(coroutine);        
+        idleTime = 0f;
+        parent.StopCoroutine(coroutine);
     }
 
     public override void Update()
@@ -37,16 +38,45 @@ public class IdleState : IState
         {
             yield return new WaitForSeconds(0.2f);
 
-            float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
-            
-            if (dist <= parent.attackRange)
+            switch (parent.type)
             {
-                parent.AI.Attack();
-            }
+                case EEnemyType.Enemy_Melee:
+                    {
+                        float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
 
-            else if (dist < parent.aggroRadius)
-            {
-                parent.AI.Follow();
+                        if (dist <= parent.meleeAttackRange)
+                        {
+                            parent.AI.Attack();
+                        }
+
+                        else if (dist < parent.aggroRadius)
+                        {
+                            parent.AI.Follow();
+                        }
+                    }
+                    break;
+                case EEnemyType.Enemy_Archor:
+                    {
+                        float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
+
+                        if (dist <= parent.meleeAttackRange)
+                        {
+                            parent.AI.Attack();
+                        }
+
+                        else if (dist < parent.aggroRadius)
+                        {
+                            parent.AI.Follow();
+                        }
+                    }
+                    break;
+                case EEnemyType.Enemy_Boss:
+                    {
+
+                    }
+                    break;
+                default:
+                    break;
             }
         }
     }

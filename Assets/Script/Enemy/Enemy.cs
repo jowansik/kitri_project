@@ -7,20 +7,31 @@ public class Enemy : Actor
 {
     public EEnemyType type;
 
+    public float meleeAttackRange;
+    public float recoveryTime;
     public float aggroRadius;
     public float maxAggroRadius;
-    public float attackRange;
-    public float recoveryTime;
+
+    // Melee
     public float wanderingTime;
+
+    // Archor
+    public float reloadTime;
+    //public float runawayRange;
 
     private bool life = true;
     private Transform mobTR;
     private Transform playerTR;
     private Animator animator;
-    
+
     private NavMeshAgent navAgent;
     private BaseAI _AI;
 
+    private List<IState> listStates;
+    private Dictionary<EEnemyState, IState> dicState = new Dictionary<EEnemyState, IState>();
+
+    public List<IState> ListStates { get { return listStates; } }
+    public Dictionary<EEnemyState, IState> DicState { get { return dicState; } }
     public Transform MobTR { get { return mobTR; } set { mobTR = value; } }
     public Transform PlayerTR { get { return playerTR; } set { playerTR = value; } }
     public Animator Animator { get { return animator; } }
@@ -53,12 +64,10 @@ public class Enemy : Actor
     {
         _AI.UpdateAI();
     }
-    
+
     public override void Init()
     {
-        ListAttackColliders = new List<Collider>();
-        ListAttackColliders.Add(FindInChild("AttackColliderLeftArm").GetComponent<Collider>());
-        ListAttackColliders.Add(FindInChild("AttackColliderRightArm").GetComponent<Collider>());
+        SetCollections();
 
         switch (type)
         {
@@ -66,23 +75,23 @@ public class Enemy : Actor
                 {
                     _AI = new MeleeAI();
 
-                    hp = 10;
+                    hp = 1000;
                     mp = 0;
-                    power = 3;
+                    power = 30;
                 }
                 break;
             case EEnemyType.Enemy_Archor:
                 {
                     _AI = new ArchorAI();
 
-                    hp = 8;
-                    mp = 5;
-                    power = 2;
+                    hp = 800;
+                    mp = 50;
+                    power = 20;
                 }
                 break;
             case EEnemyType.Enemy_Boss:
                 {
-                    
+
                 }
                 break;
             default:
@@ -97,25 +106,24 @@ public class Enemy : Actor
         if (life == false)
             return;
 
-        Debug.Log("onDamaged : " + damage);
+        Debug.Log(this + " onDamaged : " + damage);
         hp -= damage;
 
         if (hp <= 0)
         {
             hp = 0;
-            
-            _AI.Stun();
+
             onDead();
         }
         else
         {
-            if (damage >= 5)
+            if (damage >= 300)
             {
-                animator.SetTrigger("CriticalHit");
+                _AI.CriticalHit();
             }
             else
             {
-                animator.SetTrigger("Hit");
+                _AI.Hit();
             }
         }
     }
@@ -159,5 +167,30 @@ public class Enemy : Actor
         }
 
         return;
+    }
+
+    private void SetCollections()
+    {
+        listStates = new List<IState>
+        {
+            new IdleState(),
+            new AttackState(),
+            new HitState(),
+            new CriticalHitState(),
+            new StunState(),
+            new DieState(),
+            new FollowState(),
+            new RunawayState(),
+            new WanderState()
+        };
+
+        for (int i = 0; i < (int)EEnemyState.MAX; i++)
+        {
+            dicState.Add((EEnemyState)i, listStates[i]);
+        }
+
+        ListAttackColliders = new List<Collider>();
+        ListAttackColliders.Add(FindInChild("AttackColliderLeftArm").GetComponent<Collider>());
+        ListAttackColliders.Add(FindInChild("AttackColliderRightArm").GetComponent<Collider>());
     }
 }

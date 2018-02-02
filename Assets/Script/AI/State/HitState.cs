@@ -26,6 +26,9 @@ public class HitState : IState
         while (parent.Life == true)
         {
             yield return new WaitForSeconds(0.2f);
+
+            if (animatorStateInfo.normalizedTime >= 0.9f)
+                parent.AI.Idle();
         }
     }
 }

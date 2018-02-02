@@ -41,7 +41,7 @@ public class FollowState : IState
             float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
 
             // y축 감지 ?
-            if (dist < parent.aggroRadius && dist > parent.attackRange)
+            if (dist < parent.aggroRadius && dist > parent.meleeAttackRange)
             {
                 parent.NavAgent.SetDestination(parent.PlayerTR.position);
             }

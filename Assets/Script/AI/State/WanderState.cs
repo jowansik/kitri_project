@@ -27,7 +27,7 @@ public class WanderState : IState
         if (bEndPos == false)
         {
             Quaternion look = Quaternion.identity;
-            Vector3 dir = (nextPos - parent.MobTR.position).normalized;
+            Vector3 dir = ((nextPos - parent.MobTR.position)*1000000/1000000).normalized;
             dir.y = 0f;
 
             if (dir != Vector3.zero)
@@ -55,7 +55,7 @@ public class WanderState : IState
 
             float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
 
-            if (dist <= parent.attackRange)
+            if (dist <= parent.meleeAttackRange)
             {
                 parent.AI.Attack();
             }
