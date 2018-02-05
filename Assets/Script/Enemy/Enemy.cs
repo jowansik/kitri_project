@@ -8,6 +8,7 @@ public class Enemy : Actor
     public EEnemyType type;
 
     public float meleeAttackRange;
+    public float arrowAttackRange;
     public float recoveryTime;
     public float aggroRadius;
     public float maxAggroRadius;
@@ -16,33 +17,37 @@ public class Enemy : Actor
     public float wanderingTime;
 
     // Archor
+    public int arrowPower;
     public float reloadTime;
+    private float OldReloadTime;
+    private bool arrowAttack = true;
     //public float runawayRange;
 
     private bool life = true;
     private Transform mobTR;
     private Transform playerTR;
+    private Transform fireDir;
+    private Transform firePos;
     private Animator animator;
 
     private NavMeshAgent navAgent;
     private BaseAI _AI;
 
     private List<IState> listStates;
-    private Dictionary<EEnemyState, IState> dicState = new Dictionary<EEnemyState, IState>();
+    private Dictionary<EEnemyState, IState> dicState;
 
     public List<IState> ListStates { get { return listStates; } }
     public Dictionary<EEnemyState, IState> DicState { get { return dicState; } }
     public Transform MobTR { get { return mobTR; } set { mobTR = value; } }
     public Transform PlayerTR { get { return playerTR; } set { playerTR = value; } }
+    public Transform FireDir { get { return fireDir; } }
+    public Transform FirePos { get { return firePos; } }
     public Animator Animator { get { return animator; } }
     public NavMeshAgent NavAgent { get { return navAgent; } }
     public BaseAI AI { get { return _AI; } }
 
-    public bool Life
-    {
-        get { return life; }
-        set { life = value; }
-    }
+    public bool Life { get { return life; } set { life = value; } }
+    public bool ArrowAttack { get { return arrowAttack; } set { arrowAttack = value; } }
 
     private void Awake()
     {
@@ -63,6 +68,16 @@ public class Enemy : Actor
     void Update()
     {
         _AI.UpdateAI();
+
+        if (arrowAttack == false && reloadTime > 0)
+        {
+            reloadTime -= Time.deltaTime;
+            if (reloadTime <= 0)
+            {
+                arrowAttack = true;
+                reloadTime = OldReloadTime;
+            }
+        }
     }
 
     public override void Init()
@@ -84,9 +99,14 @@ public class Enemy : Actor
                 {
                     _AI = new ArchorAI();
 
+                    fireDir = FindInChild("FireDir");
+                    firePos = FindInChild("FirePos");
+                    OldReloadTime = reloadTime;
+
                     hp = 800;
                     mp = 50;
-                    power = 20;
+                    power = 5;
+                    arrowPower = 20;
                 }
                 break;
             case EEnemyType.Enemy_Boss:
@@ -99,6 +119,12 @@ public class Enemy : Actor
         }
 
         _AI.Enemy = this;
+    }
+
+    public void InstantiateArrow()
+    {
+        GameObject myArrow = Instantiate(EnemyManager.Instance.ArrowPrefab, firePos.position, Quaternion.identity);
+        myArrow.GetComponent<Arrow>().SetArrow((playerTR.position - firePos.position).normalized, 10, arrowPower);
     }
 
     public override void onDamaged(int damage)
@@ -174,16 +200,17 @@ public class Enemy : Actor
         listStates = new List<IState>
         {
             new IdleState(),
-            new AttackState(),
+            new MeleeAttackState(),
             new HitState(),
             new CriticalHitState(),
             new StunState(),
             new DieState(),
             new FollowState(),
-            new RunawayState(),
-            new WanderState()
+            new WanderState(),
+            new ArrowAttackState()
         };
 
+        dicState = new Dictionary<EEnemyState, IState>();
         for (int i = 0; i < (int)EEnemyState.MAX; i++)
         {
             dicState.Add((EEnemyState)i, listStates[i]);

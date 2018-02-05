@@ -5,9 +5,34 @@ using UnityEngine;
 
 public class EnemyManager : SingletonObejct<EnemyManager>
 {
+    private GameObject arrowPrefab;
+    private Dictionary<EEnemyType, GameObject> dicEnemyPrefab = new Dictionary<EEnemyType, GameObject>();
     private Dictionary<EEnemyType, List<Enemy>> dicEnemyList = new Dictionary<EEnemyType, List<Enemy>>();
 
+    public GameObject ArrowPrefab { get { return arrowPrefab; } }
+    public Dictionary<EEnemyType,GameObject> DicEnemyPrefab { get { return dicEnemyPrefab; } }
     public Dictionary<EEnemyType, List<Enemy>> DicEnemyList { get { return dicEnemyList; } }
+
+    private void Start()
+    {
+        LoadPrefab();
+    }
+
+    public void LoadPrefab()
+    {
+        arrowPrefab = Resources.Load("Prefab/arrow") as GameObject;
+
+        if (arrowPrefab == null)
+            Debug.LogError("프리팹 로드 실패 : arrow");
+
+        for (int i = 0; i < (int)EEnemyType.MAX; i++)
+        {
+            GameObject go = Resources.Load("Prefab/" + ((EEnemyType)i).ToString("F")) as GameObject;
+
+            if (go == null)
+                Debug.LogError("프리팹 로드 실패 : " + ((EEnemyType)i).ToString("F"));
+        }
+    }
 
     public void AddEnemy(Enemy enemy)
     {
@@ -71,4 +96,5 @@ public class EnemyManager : SingletonObejct<EnemyManager>
 
     //    return arrStates;
     //}
+
 }

@@ -53,11 +53,23 @@ public class WanderState : IState
         {
             yield return new WaitForSeconds(0.2f);
 
+            switch (parent.type)
+            {
+                case EEnemyType.Enemy_Melee:
+                    break;
+                case EEnemyType.Enemy_Archor:
+                    break;
+                case EEnemyType.Enemy_Boss:
+                    break;
+                default:
+                    break;
+            }
+
             float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
 
             if (dist <= parent.meleeAttackRange)
             {
-                parent.AI.Attack();
+                parent.AI.MeleeAttack();
             }
 
             else if (dist < parent.aggroRadius)

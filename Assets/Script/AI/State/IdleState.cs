@@ -23,6 +23,18 @@ public class IdleState : IState
 
     public override void Update()
     {
+        if (parent.type == EEnemyType.Enemy_Archor)
+        {
+            //Quaternion look = Quaternion.identity;
+            //Vector3 dir = (parent.PlayerTR.position - parent.MobTR.position).normalized;
+            //dir.y = 0f;
+            //look.SetLookRotation(dir);
+
+            //parent.MobTR.rotation = look;
+
+            return;
+        }
+
         idleTime += Time.deltaTime;
 
         if (idleTime > parent.wanderingTime)
@@ -46,7 +58,7 @@ public class IdleState : IState
 
                         if (dist <= parent.meleeAttackRange)
                         {
-                            parent.AI.Attack();
+                            parent.AI.MeleeAttack();
                         }
 
                         else if (dist < parent.aggroRadius)
@@ -58,15 +70,16 @@ public class IdleState : IState
                 case EEnemyType.Enemy_Archor:
                     {
                         float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
-
+                        
                         if (dist <= parent.meleeAttackRange)
                         {
-                            parent.AI.Attack();
+                            parent.AI.MeleeAttack();
                         }
 
-                        else if (dist < parent.aggroRadius)
+                        else if (dist < parent.arrowAttackRange && parent.ArrowAttack)
                         {
-                            parent.AI.Follow();
+                            parent.AI.ArrowAttack();
+                            parent.ArrowAttack = false;
                         }
                     }
                     break;

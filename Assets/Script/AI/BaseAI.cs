@@ -10,14 +10,14 @@ public class BaseAI
     public Enemy Enemy { set { enemy = value; } }
 
     public virtual void Idle() { ChangeState(EEnemyState.State_Idle); }
-    public virtual void Attack() { ChangeState(EEnemyState.State_Attack); }
+    public virtual void MeleeAttack() { ChangeState(EEnemyState.State_MeleeAttack); }
     public virtual void Hit() { ChangeState(EEnemyState.State_Hit); }
     public virtual void CriticalHit() { ChangeState(EEnemyState.State_CriticalHit); }
     public virtual void Stun() { ChangeState(EEnemyState.State_Stun); }
     public virtual void Die() { ChangeState(EEnemyState.State_Die); }
     public virtual void Follow() { ChangeState(EEnemyState.State_Follow); }
-    public virtual void Runaway() { ChangeState(EEnemyState.State_Runaway); }
     public virtual void Wander() { ChangeState(EEnemyState.State_Wander); }
+    public virtual void ArrowAttack() { ChangeState(EEnemyState.State_ArrowAttack); }
 
     public virtual void UpdateAI()
     {
@@ -51,16 +51,14 @@ public class BaseAI
     private void ChangeAnimation(EEnemyState enemyState)
     {
         if (enemyState == EEnemyState.State_CriticalHit)
-        {
             enemy.Animator.SetTrigger("Critical Hit");
-        }
 
         else if (enemyState == EEnemyState.State_Hit)
-        {
             enemy.Animator.SetTrigger("Hit");
-        }
 
-        else
-            enemy.Animator.SetInteger("State", (int)enemyState);
+        else if (enemyState == EEnemyState.State_ArrowAttack)
+            enemy.Animator.SetTrigger("ArrowAttack");
+        
+        enemy.Animator.SetInteger("State", (int)enemyState);
     }
 }

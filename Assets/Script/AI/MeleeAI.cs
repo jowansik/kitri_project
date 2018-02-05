@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class MeleeAI : BaseAI
 {
-    public override void Attack()
+    public override void MeleeAttack()
     {
-        base.Attack();
+        base.MeleeAttack();
     }
 
     public override void CriticalHit()
@@ -33,12 +33,7 @@ public class MeleeAI : BaseAI
     {
         base.Idle();
     }
-
-    public override void Runaway()
-    {
-        base.Runaway();
-    }
-
+    
     public override void Stun()
     {
         base.Stun();

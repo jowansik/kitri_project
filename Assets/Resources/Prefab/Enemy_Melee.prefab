@@ -725,7 +725,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1876929260003236
 GameObject:
   m_ObjectHideFlags: 1
@@ -1617,6 +1617,7 @@ MonoBehaviour:
   ListAttackColliders: []
   type: 0
   meleeAttackRange: 2
+  arrowAttackRange: 0
   recoveryTime: 2
   aggroRadius: 5
   maxAggroRadius: 10

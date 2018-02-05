@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackState : IState
-{    private float normalizedTime;
+public class MeleeAttackState : IState
+{
+    private float normalizedTime;
 
     public override void Enter(Enemy _parent)
     {
@@ -41,12 +42,34 @@ public class AttackState : IState
         {
             yield return new WaitForSeconds(0.2f);
 
-            float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
-
-            if (dist > parent.meleeAttackRange)
+            switch (parent.type)
             {
-                parent.AI.Idle();
+                case EEnemyType.Enemy_Melee:
+                    {
+                        float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
+
+                        if (dist > parent.meleeAttackRange)
+                        {
+                            parent.AI.Idle();
+                        }
+                    }
+                    break;
+                case EEnemyType.Enemy_Archor:
+                    {
+                        float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
+
+                        if (dist > parent.meleeAttackRange)
+                        {
+                            parent.AI.Idle();
+                        }
+                    }
+                    break;
+                case EEnemyType.Enemy_Boss:
+                    break;
+                default:
+                    break;
             }
+
         }
     }
 }
