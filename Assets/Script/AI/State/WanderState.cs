@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class WanderState : IState
 {
-    private Vector3 nextPos;
-    private bool bEndPos;
+    private float moveTime;
+    private Vector3 moveDir;
+    private Quaternion look = Quaternion.identity;
 
     public override void Enter(Enemy _parent)
     {
         parent = _parent;
-
-        bEndPos = false;
-        SetNextPos();
+        
+        SetTimeAndDir();
         
         coroutine = parent.StartCoroutine(CheckMobState());
     }
@@ -20,30 +20,32 @@ public class WanderState : IState
     public override void Exit()
     {
         parent.StopCoroutine(coroutine);
+
+        moveTime = 0f;
+        moveDir = Vector3.zero;
+        look = Quaternion.identity;
     }
 
     public override void Update()
     {
-        if (bEndPos == false)
+        moveTime -= Time.deltaTime;
+
+        if (moveTime > 0)
         {
-            Quaternion look = Quaternion.identity;
-            Vector3 dir = ((nextPos - parent.MobTR.position)*1000000/1000000).normalized;
-            dir.y = 0f;
+            if (moveDir == Vector3.zero)
+                return;
 
-            if (dir != Vector3.zero)
-            {
-                look.SetLookRotation(dir);
+            look.SetLookRotation(moveDir);
 
-                parent.MobTR.rotation = look;
-            }
-            else
-            {
-                parent.NavAgent.SetDestination(Vector3.zero);
-                parent.NavAgent.isStopped = true;
-                bEndPos = true;
-
-                parent.AI.Idle();
-            }
+            parent.MobTR.rotation = look;
+            
+            parent.NavAgent.SetDestination(parent.MobTR.position + moveDir);
+            parent.NavAgent.isStopped = false;
+        }
+        else
+        {
+            parent.NavAgent.isStopped = true;
+            parent.AI.Idle();
         }
     }
 
@@ -56,6 +58,19 @@ public class WanderState : IState
             switch (parent.type)
             {
                 case EEnemyType.Enemy_Melee:
+                    {
+                        float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
+
+                        if (dist <= parent.meleeAttackRange)
+                        {
+                            parent.AI.MeleeAttack();
+                        }
+
+                        else if (dist < parent.aggroRadius)
+                        {
+                            parent.AI.Follow();
+                        }
+                    }
                     break;
                 case EEnemyType.Enemy_Archor:
                     break;
@@ -64,27 +79,15 @@ public class WanderState : IState
                 default:
                     break;
             }
-
-            float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
-
-            if (dist <= parent.meleeAttackRange)
-            {
-                parent.AI.MeleeAttack();
-            }
-
-            else if (dist < parent.aggroRadius)
-            {
-                parent.AI.Follow();
-            }
         }
     }
-
-    public void SetNextPos()
+    
+    public void SetTimeAndDir()
     {
-        nextPos = new Vector3(Random.Range(-3, 3), 0, Random.Range(-3, 3));
+        moveTime = Random.Range(0.3f, 1.0f);
+        moveDir = new Vector3(Random.Range(-3, 3), 0, Random.Range(-3, 3)).normalized;
 
-        parent.NavAgent.SetDestination(nextPos);
-        parent.NavAgent.isStopped = false;
-        bEndPos = false;
+        Debug.Log("moveTime : " + moveTime);
+        Debug.Log("moveDir : " + moveDir);
     }
 }

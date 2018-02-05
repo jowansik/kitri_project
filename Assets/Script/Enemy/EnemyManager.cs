@@ -73,28 +73,4 @@ public class EnemyManager : SingletonObejct<EnemyManager>
                 Destroy(enemy.gameObject);
         }
     }
-
-    //public IState GetState(EEnemyState state)
-    //{
-    //    if (state == EEnemyState.MAX)
-    //    {
-    //        Debug.LogError("EEnemyState.MAX 를 매개변수로 사용했습니다.");
-    //        return null;
-    //    }
-
-    //    IState _tmp;
-    //    dicState.TryGetValue(state, out _tmp);
-
-    //    return _tmp;
-    //}
-
-    //public IState[] CreateArrayStates()
-    //{
-    //    IState[] arrStates = new IState[listStates.Count];
-
-    //    listStates.CopyTo(arrStates);
-
-    //    return arrStates;
-    //}
-
 }

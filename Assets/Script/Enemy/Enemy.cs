@@ -17,9 +17,9 @@ public class Enemy : Actor
     public float wanderingTime;
 
     // Archor
-    public int arrowPower;
     public float reloadTime;
     private float OldReloadTime;
+    private int arrowPower;
     private bool arrowAttack = true;
     //public float runawayRange;
 
@@ -29,7 +29,6 @@ public class Enemy : Actor
     private Transform fireDir;
     private Transform firePos;
     private Animator animator;
-
     private NavMeshAgent navAgent;
     private BaseAI _AI;
 
@@ -46,6 +45,7 @@ public class Enemy : Actor
     public NavMeshAgent NavAgent { get { return navAgent; } }
     public BaseAI AI { get { return _AI; } }
 
+    public int ArrowPower { get { return arrowPower; } set { arrowPower = value; } }
     public bool Life { get { return life; } set { life = value; } }
     public bool ArrowAttack { get { return arrowAttack; } set { arrowAttack = value; } }
 
@@ -55,10 +55,10 @@ public class Enemy : Actor
 
     void Start()
     {
-        mobTR = GetComponent<Transform>();
+        mobTR = GetComponentInParent<Transform>();
         playerTR = GameObject.FindWithTag("Player").GetComponent<Transform>();
         animator = GetComponent<Animator>();
-        navAgent = GetComponent<NavMeshAgent>();
+        navAgent = GetComponentInParent<NavMeshAgent>();
 
         Init();
 
@@ -78,6 +78,8 @@ public class Enemy : Actor
                 reloadTime = OldReloadTime;
             }
         }
+
+        transform.localPosition = Vector3.zero;
     }
 
     public override void Init()
@@ -220,4 +222,13 @@ public class Enemy : Actor
         ListAttackColliders.Add(FindInChild("AttackColliderLeftArm").GetComponent<Collider>());
         ListAttackColliders.Add(FindInChild("AttackColliderRightArm").GetComponent<Collider>());
     }
+
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if(other.tag =="Player")
+    //    {
+    //        //GetComponent<Rigidbody>().AddForce(Vector3.up * 10);
+    //        Debug.Log("충돌");
+    //    }
+    //}
 }

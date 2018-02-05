@@ -8,6 +8,8 @@ public class HitState : IState
     {
         parent = _parent;
 
+        animatorStateInfo = parent.Animator.GetCurrentAnimatorStateInfo(0);
+
         coroutine = parent.StartCoroutine(CheckMobState());
     }
 

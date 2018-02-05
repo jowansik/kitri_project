@@ -15,10 +15,11 @@ public class Arrow : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag != "Player")
+        if (other.tag == "Enemy")
             return;
 
-        other.GetComponent<Actor>().onDamaged(power);
+        if (other.tag == "Player")
+            other.GetComponent<Actor>().onDamaged(power);
 
         Destroy(this.gameObject);   // todo : 오브젝트 풀 만들기
     }

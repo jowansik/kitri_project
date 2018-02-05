@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class ArrowAttackState : IState
 {
-    private float normalizedTime;
+    private bool bFirstShot;
 
     public override void Enter(Enemy _parent)
     {
         parent = _parent;
+
+        bFirstShot = true;
+
+        animatorStateInfo = parent.Animator.GetCurrentAnimatorStateInfo(0);
 
         coroutine = parent.StartCoroutine(CheckMobState());
     }
@@ -22,15 +26,18 @@ public class ArrowAttackState : IState
     {
         base.Update();
 
-        normalizedTime = parent.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+        if (bFirstShot == false)    // 첫 프레임에 발사하는 버그 방지
+        {
+            Quaternion look = Quaternion.identity;
+            Vector3 dir = (parent.PlayerTR.position - parent.MobTR.position).normalized;
+            dir.y = 0f;
 
-        Quaternion look = Quaternion.identity;
-        Vector3 dir = (parent.PlayerTR.position - parent.MobTR.position).normalized;
-        dir.y = 0f;
+            look.SetFromToRotation(parent.FireDir.position, dir);
 
-        look.SetFromToRotation(parent.FireDir.position, dir);
-        
-        parent.MobTR.rotation = look;
+            parent.MobTR.rotation = look;
+        }
+
+        bFirstShot = false;
     }
 
     public override IEnumerator CheckMobState()
@@ -45,9 +52,9 @@ public class ArrowAttackState : IState
                     break;
                 case EEnemyType.Enemy_Archor:
                     {
-                        if (normalizedTime >= 0.9f)
+                        if (animatorStateInfo.normalizedTime >= 0.9f)
                         {
-                            Debug.Log(normalizedTime);
+                            Debug.Log(animatorStateInfo.normalizedTime);
                             Shoot();
                             parent.AI.Idle();
                         }
@@ -60,7 +67,7 @@ public class ArrowAttackState : IState
             }
         }
     }
-    
+
     public void Shoot()
     {
         Debug.Log("Shoot");
