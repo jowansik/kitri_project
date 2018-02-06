@@ -20,14 +20,14 @@ public class EnemyManager : SingletonObejct<EnemyManager>
 
     public void LoadPrefab()
     {
-        arrowPrefab = Resources.Load("Prefab/arrow") as GameObject;
+        arrowPrefab = Resources.Load("jws/Prefab/arrow") as GameObject;
 
         if (arrowPrefab == null)
             Debug.LogError("프리팹 로드 실패 : arrow");
 
         for (int i = 0; i < (int)EEnemyType.MAX; i++)
         {
-            GameObject go = Resources.Load("Prefab/" + ((EEnemyType)i).ToString("F")) as GameObject;
+            GameObject go = Resources.Load("jws/Prefab/" + ((EEnemyType)i).ToString("F")) as GameObject;
 
             if (go == null)
                 Debug.LogError("프리팹 로드 실패 : " + ((EEnemyType)i).ToString("F"));
