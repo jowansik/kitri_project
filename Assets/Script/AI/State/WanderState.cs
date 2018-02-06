@@ -11,9 +11,9 @@ public class WanderState : IState
     public override void Enter(Enemy _parent)
     {
         parent = _parent;
-        
+
         SetTimeAndDir();
-        
+
         coroutine = parent.StartCoroutine(CheckMobState());
     }
 
@@ -38,7 +38,7 @@ public class WanderState : IState
             look.SetLookRotation(moveDir);
 
             parent.MobTR.rotation = look;
-            
+
             parent.NavAgent.SetDestination(parent.MobTR.position + moveDir);
             parent.NavAgent.isStopped = false;
         }
@@ -81,13 +81,13 @@ public class WanderState : IState
             }
         }
     }
-    
+
     public void SetTimeAndDir()
     {
         moveTime = Random.Range(0.3f, 1.0f);
         moveDir = new Vector3(Random.Range(-3, 3), 0, Random.Range(-3, 3)).normalized;
 
-        Debug.Log("moveTime : " + moveTime);
-        Debug.Log("moveDir : " + moveDir);
+        //Debug.Log("moveTime : " + moveTime);
+        //Debug.Log("moveDir : " + moveDir);
     }
 }

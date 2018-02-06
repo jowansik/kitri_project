@@ -92,7 +92,10 @@ public class Actor : MyBaseObejct {
     {
 
     }
+    public virtual void EndAttack()
+    {
 
+    }
 
     
 }

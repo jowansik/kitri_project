@@ -10,7 +10,7 @@ public class FollowState : IState
 
         parent.NavAgent.SetDestination(parent.PlayerTR.position);
         parent.NavAgent.isStopped = false;
-        
+
         coroutine = parent.StartCoroutine(CheckMobState());
     }
 
@@ -19,17 +19,22 @@ public class FollowState : IState
         parent.NavAgent.SetDestination(Vector3.zero);
         parent.NavAgent.isStopped = true;
 
-        parent.StopCoroutine(coroutine);        
+        parent.StopCoroutine(coroutine);
     }
 
     public override void Update()
     {
-        Quaternion look = Quaternion.identity;
-        Vector3 dir = (parent.PlayerTR.position - parent.MobTR.position).normalized;
-        dir.y = 0f;
-        look.SetLookRotation(dir);
+        //float tmp = parent.MobTR.position.y - parent.PlayerTR.position.y;
 
-        parent.MobTR.rotation = look;
+        //if (tmp < 3.0f && tmp > -3.0f)
+        //{
+        //    Quaternion look = Quaternion.identity;
+        //    Vector3 dir = (parent.PlayerTR.position - parent.MobTR.position).normalized;
+        //    dir.y = 0f;
+        //    look.SetLookRotation(dir);
+
+        //    parent.MobTR.rotation = look;
+        //}
     }
 
     public override IEnumerator CheckMobState()

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
+    private float lifeTime = 10f;
     private Vector3 dir;
     private float speed;
     private int power;
@@ -11,6 +12,12 @@ public class Arrow : MonoBehaviour
     private void Update()
     {
         transform.position += dir * speed * Time.deltaTime;
+        lifeTime -= Time.deltaTime;
+
+        if (lifeTime < 0f)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

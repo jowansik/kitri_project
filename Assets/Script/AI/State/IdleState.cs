@@ -70,16 +70,15 @@ public class IdleState : IState
                 case EEnemyType.Enemy_Archor:
                     {
                         float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
-                        
+
                         if (dist <= parent.meleeAttackRange)
                         {
                             parent.AI.MeleeAttack();
                         }
 
-                        else if (dist < parent.arrowAttackRange && parent.ArrowAttack)
+                        else if (dist < parent.arrowAttackRange && parent.BReload == false)
                         {
                             parent.AI.ArrowAttack();
-                            parent.ArrowAttack = false;
                         }
                     }
                     break;

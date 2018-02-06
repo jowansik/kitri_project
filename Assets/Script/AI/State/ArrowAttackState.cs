@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class ArrowAttackState : IState
 {
-    private bool bFirstShot;
-
     public override void Enter(Enemy _parent)
     {
         parent = _parent;
-
-        bFirstShot = true;
-
-        animatorStateInfo = parent.Animator.GetCurrentAnimatorStateInfo(0);
 
         coroutine = parent.StartCoroutine(CheckMobState());
     }
@@ -20,24 +14,22 @@ public class ArrowAttackState : IState
     public override void Exit()
     {
         parent.StopCoroutine(coroutine);
+
+        parent.BReload = true;
     }
 
     public override void Update()
     {
         base.Update();
 
-        if (bFirstShot == false)    // 첫 프레임에 발사하는 버그 방지
-        {
-            Quaternion look = Quaternion.identity;
-            Vector3 dir = (parent.PlayerTR.position - parent.MobTR.position).normalized;
-            dir.y = 0f;
+        Quaternion look = Quaternion.identity;
+        Vector3 dir = parent.PlayerTR.position- parent.MobTR.position;
+        dir.y = 0f;
+        dir = dir.normalized;
 
-            look.SetFromToRotation(parent.FireDir.position, dir);
-
-            parent.MobTR.rotation = look;
-        }
-
-        bFirstShot = false;
+        look.SetLookRotation(dir);
+        
+        parent.MobTR.rotation = look;
     }
 
     public override IEnumerator CheckMobState()
@@ -52,9 +44,15 @@ public class ArrowAttackState : IState
                     break;
                 case EEnemyType.Enemy_Archor:
                     {
-                        if (animatorStateInfo.normalizedTime >= 0.9f)
+                        float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
+
+                        if (dist <= parent.meleeAttackRange)
                         {
-                            Debug.Log(animatorStateInfo.normalizedTime);
+                            parent.AI.MeleeAttack();
+                        }
+
+                        else if (normalizedTime >= 0.9f)
+                        {
                             Shoot();
                             parent.AI.Idle();
                         }

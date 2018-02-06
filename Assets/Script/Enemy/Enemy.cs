@@ -20,13 +20,12 @@ public class Enemy : Actor
     public float reloadTime;
     private float OldReloadTime;
     private int arrowPower;
-    private bool arrowAttack = true;
+    private bool bReload = false;   // 쏘고나서 장전
     //public float runawayRange;
 
     private bool life = true;
     private Transform mobTR;
     private Transform playerTR;
-    private Transform fireDir;
     private Transform firePos;
     private Animator animator;
     private NavMeshAgent navAgent;
@@ -38,8 +37,7 @@ public class Enemy : Actor
     public List<IState> ListStates { get { return listStates; } }
     public Dictionary<EEnemyState, IState> DicState { get { return dicState; } }
     public Transform MobTR { get { return mobTR; } set { mobTR = value; } }
-    public Transform PlayerTR { get { return playerTR; } set { playerTR = value; } }
-    public Transform FireDir { get { return fireDir; } }
+    public Transform PlayerTR { get { return playerTR; } set { playerTR = value; } } 
     public Transform FirePos { get { return firePos; } }
     public Animator Animator { get { return animator; } }
     public NavMeshAgent NavAgent { get { return navAgent; } }
@@ -47,7 +45,7 @@ public class Enemy : Actor
 
     public int ArrowPower { get { return arrowPower; } set { arrowPower = value; } }
     public bool Life { get { return life; } set { life = value; } }
-    public bool ArrowAttack { get { return arrowAttack; } set { arrowAttack = value; } }
+    public bool BReload { get { return bReload; } set { bReload = value; } }
 
     private void Awake()
     {
@@ -69,17 +67,15 @@ public class Enemy : Actor
     {
         _AI.UpdateAI();
 
-        if (arrowAttack == false && reloadTime > 0)
+        if (bReload)
         {
-            reloadTime -= Time.deltaTime;
-            if (reloadTime <= 0)
-            {
-                arrowAttack = true;
-                reloadTime = OldReloadTime;
-            }
+            CalcReloadTime();
         }
 
-        transform.localPosition = Vector3.zero;
+        //Vector3 tmp = transform.localPosition;
+        //tmp.x = 0f;
+        //tmp.z = 0f;
+        //transform.localPosition = tmp;
     }
 
     public override void Init()
@@ -100,8 +96,7 @@ public class Enemy : Actor
             case EEnemyType.Enemy_Archor:
                 {
                     _AI = new ArchorAI();
-
-                    fireDir = FindInChild("FireDir");
+                    
                     firePos = FindInChild("FirePos");
                     OldReloadTime = reloadTime;
 
@@ -125,8 +120,22 @@ public class Enemy : Actor
 
     public void InstantiateArrow()
     {
-        GameObject myArrow = Instantiate(EnemyManager.Instance.ArrowPrefab, firePos.position, Quaternion.identity);
-        myArrow.GetComponent<Arrow>().SetArrow((playerTR.position - firePos.position).normalized, 10, arrowPower);
+        GameObject newArrow = Instantiate(EnemyManager.Instance.ArrowPrefab, firePos.position, Quaternion.identity);
+        newArrow.GetComponent<Arrow>().SetArrow((playerTR.position - firePos.position).normalized, 10, arrowPower);
+    }
+
+    private void CalcReloadTime()
+    {
+        if (reloadTime > 0)
+        {
+            reloadTime -= Time.deltaTime;
+
+            if (reloadTime <= 0)
+            {
+                bReload = false;
+                reloadTime = OldReloadTime;
+            }
+        }
     }
 
     public override void onDamaged(int damage)
@@ -221,14 +230,23 @@ public class Enemy : Actor
         ListAttackColliders = new List<Collider>();
         ListAttackColliders.Add(FindInChild("AttackColliderLeftArm").GetComponent<Collider>());
         ListAttackColliders.Add(FindInChild("AttackColliderRightArm").GetComponent<Collider>());
+
+        foreach (Collider coll in ListAttackColliders)
+        {
+            coll.gameObject.tag = "Enemy";
+        }
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if(other.tag =="Player")
-    //    {
-    //        //GetComponent<Rigidbody>().AddForce(Vector3.up * 10);
-    //        Debug.Log("충돌");
-    //    }
-    //}
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            Vector3 tmp = new Vector3();
+            tmp = Vector3.up *100;
+
+            //gameObject.GetComponent<Rigidbody>().velocity.Set(0,100,0);
+            gameObject.GetComponent<Rigidbody>().AddForce(tmp);
+            Debug.Log("충돌");
+        }
+    }
 }

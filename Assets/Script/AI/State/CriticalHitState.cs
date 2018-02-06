@@ -7,9 +7,7 @@ public class CriticalHitState : IState
     public override void Enter(Enemy _parent)
     {
         parent = _parent;
-
-        animatorStateInfo = parent.Animator.GetCurrentAnimatorStateInfo(0);
-
+        
         coroutine = parent.StartCoroutine(CheckMobState());        
     }
 
@@ -29,7 +27,7 @@ public class CriticalHitState : IState
         {
             yield return new WaitForSeconds(0.2f);
 
-            if (animatorStateInfo.normalizedTime >= 0.9f)
+            if (normalizedTime >= 0.9f)
                 parent.AI.Idle();
         }
     }        

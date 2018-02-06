@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class MeleeAttackState : IState
 {
-    private float normalizedTime;
-
     public override void Enter(Enemy _parent)
     {
         parent = _parent;
@@ -20,9 +18,7 @@ public class MeleeAttackState : IState
 
     public override void Update()
     {
-        animatorStateInfo = parent.Animator.GetCurrentAnimatorStateInfo(0);
-
-        normalizedTime = animatorStateInfo.normalizedTime;
+        base.Update();
         
         // 공격 시작시 방향 전환
         if ((normalizedTime * 10.0f) % 10 < 1f)
