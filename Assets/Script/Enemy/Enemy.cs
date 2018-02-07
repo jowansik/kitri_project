@@ -23,7 +23,7 @@ public class Enemy : Actor
     private int arrowPower;
     private bool bReload = false;   // 쏘고나서 장전
     //public float runawayRange;
-    
+
     private Transform mobTR;
     private Transform playerTR;
     private Transform firePos;
@@ -163,13 +163,9 @@ public class Enemy : Actor
     {
         if (IsAlive == false)
             return;
-        
+
         Debug.Log(this + " onDamaged : " + damage);
         nowHp -= damage;
-
-        EnemyManager.Instance.lastHit.id = mobId;
-        EnemyManager.Instance.lastHit.hp = nowHp;
-        EnemyManager.Instance.UpdateMobInfo();
 
         if (nowHp <= 0)
         {
@@ -188,6 +184,10 @@ public class Enemy : Actor
                 _AI.Hit();
             }
         }
+
+        EnemyManager.Instance.lastHit.id = mobId;
+        EnemyManager.Instance.lastHit.hp = nowHp;
+        EnemyManager.Instance.UpdateMobInfo();
     }
 
     public override void onDead()
@@ -253,8 +253,24 @@ public class Enemy : Actor
         }
 
         ListAttackColliders = new List<Collider>();
-        ListAttackColliders.Add(FindInChild("AttackColliderLeftArm").GetComponent<Collider>());
-        ListAttackColliders.Add(FindInChild("AttackColliderRightArm").GetComponent<Collider>());
+
+        switch (type)
+        {
+            case EEnemyType.Enemy_Melee:
+                //ListAttackColliders.Add(FindInChild("AttackColliderLeftArm").GetComponent<Collider>());
+                ListAttackColliders.Add(FindInChild("AttackColliderRightArm").GetComponent<Collider>());
+                break;
+            case EEnemyType.Enemy_Archor:
+               // ListAttackColliders.Add(FindInChild("AttackColliderLeftLeg").GetComponent<Collider>());
+                ListAttackColliders.Add(FindInChild("AttackColliderRightLeg").GetComponent<Collider>());
+                break;
+            case EEnemyType.Enemy_Boss:
+                break;
+            case EEnemyType.MAX:
+                break;
+            default:
+                break;
+        }        
 
         foreach (Collider coll in ListAttackColliders)
         {

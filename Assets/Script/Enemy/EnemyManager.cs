@@ -25,7 +25,7 @@ public class EnemyManager : SingletonObejct<EnemyManager>
     public int LastHitMobID { get { return lastHitMobID; } }
     public int LastHitMobHP { get { return lastHitMobHP; } }
     public GameObject ArrowPrefab { get { return arrowPrefab; } }
-    public Dictionary<EEnemyType,GameObject> DicEnemyPrefab { get { return dicEnemyPrefab; } }
+    public Dictionary<EEnemyType, GameObject> DicEnemyPrefab { get { return dicEnemyPrefab; } }
     public Dictionary<EEnemyType, List<Enemy>> DicEnemyList { get { return dicEnemyList; } }
 
     private void Start()

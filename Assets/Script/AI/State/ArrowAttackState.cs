@@ -27,12 +27,12 @@ public class ArrowAttackState : IState
         base.Update();
 
         Quaternion look = Quaternion.identity;
-        Vector3 dir = parent.PlayerTR.position- parent.MobTR.position;
+        Vector3 dir = parent.PlayerTR.position - parent.MobTR.position;
         dir.y = 0f;
         dir = dir.normalized;
 
         look.SetLookRotation(dir);
-        
+
         parent.MobTR.rotation = look;
     }
 
