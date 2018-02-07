@@ -216,7 +216,7 @@ GameObject:
   - component: {fileID: 4901156873659006}
   - component: {fileID: 136471174604792410}
   - component: {fileID: 114211287584418014}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: AttackColliderLeftArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -448,7 +448,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1538434941493418
 GameObject:
   m_ObjectHideFlags: 1
@@ -642,7 +642,7 @@ GameObject:
   - component: {fileID: 136205017658023624}
   - component: {fileID: 54242884722963386}
   - component: {fileID: 136102086495627948}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Enemy_Archor
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -674,7 +674,7 @@ GameObject:
   - component: {fileID: 4653997807741372}
   - component: {fileID: 136498310960700016}
   - component: {fileID: 114343210810948918}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: AttackColliderRightArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}

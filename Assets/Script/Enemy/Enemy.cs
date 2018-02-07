@@ -239,14 +239,13 @@ public class Enemy : Actor
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
-        {
-            Vector3 tmp = new Vector3();
-            tmp = Vector3.up *100;
-
-            //gameObject.GetComponent<Rigidbody>().velocity.Set(0,100,0);
-            gameObject.GetComponent<Rigidbody>().AddForce(tmp);
-            Debug.Log("충돌");
-        }
+        //if (other.tag == "Player")
+        //{
+        //    Vector3 tmp = new Vector3();
+        //    tmp = Vector3.up * 500;
+            
+        //    gameObject.GetComponent<Rigidbody>().AddForce(tmp);
+        //    Debug.Log("충돌");
+        //}
     }
 }

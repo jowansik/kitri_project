@@ -81,7 +81,7 @@ GameObject:
   - component: {fileID: 4816510613244496}
   - component: {fileID: 136073726191094324}
   - component: {fileID: 114658078387087976}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: AttackColliderLeftArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -338,7 +338,7 @@ GameObject:
   - component: {fileID: 4803132317108120}
   - component: {fileID: 136535628657715876}
   - component: {fileID: 114553401362631018}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: AttackColliderRightArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -690,7 +690,7 @@ GameObject:
   - component: {fileID: 136160670574935430}
   - component: {fileID: 54506302031275030}
   - component: {fileID: 136346115030619188}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Enemy_Melee
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1600,7 +1600,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 122
   m_CollisionDetection: 0
 --- !u!95 &95746365817330752
 Animator:
@@ -1611,7 +1611,7 @@ Animator:
   m_GameObject: {fileID: 1866676284690606}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 320b1c2af77554f99a1658df4a6d3d5c, type: 3}
-  m_Controller: {fileID: 9100000, guid: ed343728185067542bc3d36240f8b2e2, type: 2}
+  m_Controller: {fileID: 9100000, guid: 28065f7b0d93d504b8b42ec93910a5ba, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1

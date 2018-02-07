@@ -38,7 +38,7 @@ public class WanderState : IState
             look.SetLookRotation(moveDir);
 
             parent.MobTR.rotation = look;
-
+            
             parent.NavAgent.SetDestination(parent.MobTR.position + moveDir);
             parent.NavAgent.isStopped = false;
         }
