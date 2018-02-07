@@ -47,12 +47,8 @@ public class Enemy : Actor
 
     public int ArrowPower { get { return arrowPower; } set { arrowPower = value; } }
     public bool BReload { get { return bReload; } set { bReload = value; } }
-
-    private void Awake()
-    {
-    }
-
-    void Start()
+    
+    private void Start()
     {
         mobTR = transform.parent.GetComponent<Transform>();
         playerTR = GameObject.FindWithTag("Player").GetComponent<Transform>();
@@ -64,7 +60,7 @@ public class Enemy : Actor
         _AI.Idle();
     }
 
-    void Update()
+    private void Update()
     {
         _AI.UpdateAI();
 
@@ -73,10 +69,10 @@ public class Enemy : Actor
             CalcReloadTime();
         }
 
-        //Vector3 tmp = transform.localPosition;
-        //tmp.x = 0f;
-        //tmp.z = 0f;
-        //transform.localPosition = tmp;
+        if (!CalcIsGround())
+        {
+            _AI.Die();
+        }
     }
 
     public override void Init()
@@ -159,6 +155,18 @@ public class Enemy : Actor
         }
     }
 
+    private bool CalcIsGround()
+    {
+        float tmp = mobTR.position.y - transform.position.y;
+
+        if (tmp < 0.1f && tmp > -0.1f)
+            isGrounded = true;
+        else
+            isGrounded = false;
+
+        return isGrounded;
+    }
+
     public override void onDamaged(int damage)
     {
         if (IsAlive == false)
@@ -187,6 +195,7 @@ public class Enemy : Actor
 
         EnemyManager.Instance.lastHit.id = mobId;
         EnemyManager.Instance.lastHit.hp = nowHp;
+        EnemyManager.Instance.lastHit.maxHp = hp;
         EnemyManager.Instance.UpdateMobInfo();
     }
 
@@ -261,7 +270,7 @@ public class Enemy : Actor
                 ListAttackColliders.Add(FindInChild("AttackColliderRightArm").GetComponent<Collider>());
                 break;
             case EEnemyType.Enemy_Archor:
-               // ListAttackColliders.Add(FindInChild("AttackColliderLeftLeg").GetComponent<Collider>());
+                // ListAttackColliders.Add(FindInChild("AttackColliderLeftLeg").GetComponent<Collider>());
                 ListAttackColliders.Add(FindInChild("AttackColliderRightLeg").GetComponent<Collider>());
                 break;
             case EEnemyType.Enemy_Boss:
@@ -270,7 +279,7 @@ public class Enemy : Actor
                 break;
             default:
                 break;
-        }        
+        }
 
         foreach (Collider coll in ListAttackColliders)
         {

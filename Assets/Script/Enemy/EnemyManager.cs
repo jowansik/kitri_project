@@ -7,16 +7,19 @@ public struct MobInfo
 {
     public int id;
     public int hp;
+    public int maxHp;
 }
 
 public class EnemyManager : SingletonObejct<EnemyManager>
 {
-    public MobInfo lastHit = new MobInfo { id = 0, hp = 0 };
+    public MobInfo lastHit = new MobInfo { id = 0, hp = 0, maxHp = 0 };
 
     [SerializeField]
     private int lastHitMobID;
     [SerializeField]
     private int lastHitMobHP;
+    [SerializeField]
+    private int lastHitMobMaxHP;
 
     private GameObject arrowPrefab;
     private Dictionary<EEnemyType, GameObject> dicEnemyPrefab = new Dictionary<EEnemyType, GameObject>();
@@ -24,6 +27,7 @@ public class EnemyManager : SingletonObejct<EnemyManager>
 
     public int LastHitMobID { get { return lastHitMobID; } }
     public int LastHitMobHP { get { return lastHitMobHP; } }
+    public int LastHitMobMaxHP { get { return lastHitMobMaxHP; } }
     public GameObject ArrowPrefab { get { return arrowPrefab; } }
     public Dictionary<EEnemyType, GameObject> DicEnemyPrefab { get { return dicEnemyPrefab; } }
     public Dictionary<EEnemyType, List<Enemy>> DicEnemyList { get { return dicEnemyList; } }
@@ -37,6 +41,7 @@ public class EnemyManager : SingletonObejct<EnemyManager>
     {
         lastHitMobID = lastHit.id;
         lastHitMobHP = lastHit.hp;
+        lastHitMobMaxHP = lastHit.maxHp;
     }
 
     public void LoadPrefab()

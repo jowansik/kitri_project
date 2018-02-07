@@ -72,7 +72,7 @@ public class ArrowAttackState : IState
 
     public void Shoot()
     {
-        Debug.Log("Shoot");
+        //Debug.Log("Shoot");
 
         parent.InstantiateArrow();
     }
