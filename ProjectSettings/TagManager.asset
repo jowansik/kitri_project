@@ -14,18 +14,18 @@ TagManager:
   - UI
   - 
   - 
+  - Terrain
   - 
+  - Player
+  - PlayerAttackCollider
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Enemy
+  - EnemyAttackCollider
+  - Sword
+  - Mace
+  - Minigun
+  - Pistol
+  - Shield
   - 
   - 
   - 

@@ -22,8 +22,7 @@ public class Enemy : Actor
     private int arrowPower;
     private bool bReload = false;   // 쏘고나서 장전
     //public float runawayRange;
-
-    private bool life = true;
+    
     private Transform mobTR;
     private Transform playerTR;
     private Transform firePos;
@@ -37,14 +36,13 @@ public class Enemy : Actor
     public List<IState> ListStates { get { return listStates; } }
     public Dictionary<EEnemyState, IState> DicState { get { return dicState; } }
     public Transform MobTR { get { return mobTR; } set { mobTR = value; } }
-    public Transform PlayerTR { get { return playerTR; } set { playerTR = value; } } 
+    public Transform PlayerTR { get { return playerTR; } set { playerTR = value; } }
     public Transform FirePos { get { return firePos; } }
     public Animator Animator { get { return animator; } }
     public NavMeshAgent NavAgent { get { return navAgent; } }
     public BaseAI AI { get { return _AI; } }
 
     public int ArrowPower { get { return arrowPower; } set { arrowPower = value; } }
-    public bool Life { get { return life; } set { life = value; } }
     public bool BReload { get { return bReload; } set { bReload = value; } }
 
     private void Awake()
@@ -88,21 +86,32 @@ public class Enemy : Actor
                 {
                     _AI = new MeleeAI();
 
-                    hp = 1000;
-                    mp = 0;
-                    power = 30;
+                    Status st = new Status
+                    {
+                        hp = 1000,
+                        mp = 200,
+                        power = 30
+                    };
+
+                    StatusInit(st);
                 }
                 break;
             case EEnemyType.Enemy_Archor:
                 {
                     _AI = new ArchorAI();
-                    
+
                     firePos = FindInChild("FirePos");
                     OldReloadTime = reloadTime;
 
-                    hp = 800;
-                    mp = 50;
-                    power = 5;
+                    Status st = new Status
+                    {
+                        hp = 800,
+                        mp = 150,
+                        power = 5
+                    };
+
+                    StatusInit(st);
+
                     arrowPower = 20;
                 }
                 break;
@@ -114,6 +123,7 @@ public class Enemy : Actor
             default:
                 break;
         }
+
 
         _AI.Enemy = this;
     }
@@ -140,15 +150,15 @@ public class Enemy : Actor
 
     public override void onDamaged(int damage)
     {
-        if (life == false)
+        if (IsAlive == false)
             return;
-
+        
         Debug.Log(this + " onDamaged : " + damage);
-        hp -= damage;
+        nowHp -= damage;
 
-        if (hp <= 0)
+        if (nowHp <= 0)
         {
-            hp = 0;
+            nowHp = 0;
 
             onDead();
         }
@@ -168,7 +178,7 @@ public class Enemy : Actor
     public override void onDead()
     {
         _AI.Die();
-        life = false;
+        isAlive = false;
     }
 
     public override void Skill()
@@ -243,9 +253,19 @@ public class Enemy : Actor
         //{
         //    Vector3 tmp = new Vector3();
         //    tmp = Vector3.up * 500;
-            
+
         //    gameObject.GetComponent<Rigidbody>().AddForce(tmp);
         //    Debug.Log("충돌");
         //}
+    }
+
+    public void LookPlayer()
+    {
+        Quaternion look = Quaternion.identity;
+        Vector3 dir = (PlayerTR.position - MobTR.position).normalized;
+        dir.y = 0f;
+        look.SetLookRotation(dir);
+
+        MobTR.rotation = look;
     }
 }

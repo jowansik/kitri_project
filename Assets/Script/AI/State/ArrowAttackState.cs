@@ -34,7 +34,7 @@ public class ArrowAttackState : IState
 
     public override IEnumerator CheckMobState()
     {
-        while (parent.Life == true)
+        while (parent.IsAlive == true)
         {
             yield return new WaitForSeconds(0.2f);
 

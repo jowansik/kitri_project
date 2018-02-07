@@ -8,6 +8,8 @@ public class FollowState : IState
     {
         parent = _parent;
 
+        parent.LookPlayer();
+
         parent.NavAgent.SetDestination(parent.PlayerTR.position);
         parent.NavAgent.isStopped = false;
 
@@ -39,7 +41,7 @@ public class FollowState : IState
 
     public override IEnumerator CheckMobState()
     {
-        while (parent.Life == true)
+        while (parent.IsAlive == true)
         {
             yield return new WaitForSeconds(0.2f);
 

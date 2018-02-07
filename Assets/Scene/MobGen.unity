@@ -298,16 +298,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 54506302031275030, guid: 80eca1c8247496946a3a4f6013114fdd,
-        type: 2}
-      propertyPath: m_Constraints
-      value: 122
-      objectReference: {fileID: 0}
-    - target: {fileID: 95746365817330752, guid: 80eca1c8247496946a3a4f6013114fdd,
-        type: 2}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 28065f7b0d93d504b8b42ec93910a5ba, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 80eca1c8247496946a3a4f6013114fdd, type: 2}
   m_IsPrefabParent: 0
@@ -695,7 +685,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   JumpForce: 7
   MoveSpeed: 2
+  NowMoveSpeed: 2
   ListAttackColliders: []
+  ListAttackCollidersComp: []
+  hp: 0
+  mp: 0
+  power: 0
+  nowAttackPower: 0
+  nowHp: 0
+  nowMp: 0
+  nowPower: 0
 --- !u!95 &931192360
 Animator:
   serializedVersion: 3
