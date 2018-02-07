@@ -1685,7 +1685,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   JumpForce: 7
   MoveSpeed: 2
+  NowMoveSpeed: 2
   ListAttackColliders: []
+  ListAttackCollidersComp: []
+  hp: 0
+  mp: 0
+  power: 0
+  nowAttackPower: 0
+  nowHp: 0
+  nowMp: 0
+  nowPower: 0
   type: 1
   meleeAttackRange: 2
   arrowAttackRange: 20

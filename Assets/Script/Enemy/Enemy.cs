@@ -51,7 +51,7 @@ public class Enemy : Actor
 
     void Start()
     {
-        mobTR = GetComponentInParent<Transform>();
+        mobTR = transform.parent.GetComponent<Transform>();
         playerTR = GameObject.FindWithTag("Player").GetComponent<Transform>();
         animator = GetComponent<Animator>();
         navAgent = GetComponentInParent<NavMeshAgent>();
@@ -93,7 +93,7 @@ public class Enemy : Actor
                         power = 30
                     };
 
-                    StatusInit(st);
+                    base.StatusInit(st);
                 }
                 break;
             case EEnemyType.Enemy_Archor:
@@ -110,7 +110,7 @@ public class Enemy : Actor
                         power = 5
                     };
 
-                    StatusInit(st);
+                    base.StatusInit(st);
 
                     arrowPower = 20;
                 }
@@ -124,8 +124,12 @@ public class Enemy : Actor
                 break;
         }
 
-
         _AI.Enemy = this;
+
+        base.Init();
+        nowPower = power;
+        nowHp = hp;
+        nowMp = mp;
     }
 
     public void InstantiateArrow()

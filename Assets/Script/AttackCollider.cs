@@ -27,15 +27,20 @@ public class AttackCollider : MyBaseObejct
 
     private void OnTriggerEnter(Collider other)
     {
-        print("Hit!");
-
-        if (attackState == 0)
+        bool isinAttacked = false;
+        if (!actor.attackedObject.TryGetValue(other.gameObject, out isinAttacked))
         {
-            if (other.gameObject.GetComponent<Actor>() != null)
-            {
-                other.transform.position += (other.transform.position - transform.position) * 0.1f; // 밀침
-                other.SendMessage("onDamaged", actor.POWER);
-            }
+            actor.attackedObject.Add(other.gameObject, true);
+        }
+        actor.attackedObject[other.gameObject] = true;
+
+        if (isinAttacked == false)
+        {
+            print("Hit다 hit! 맞은놈 : " + other.ToString() + "데미지 : " + actor.NowPOWER * actor.NowAttackPower + " 밀리는 방향 " + actor.AttackDirction);
+            other.SendMessage("onDamaged", actor.NowPOWER * actor.NowAttackPower);
+           
+            actor.AttackRecoverMana();
+            other.SendMessage("DamagedRecoverMana");
         }
     }
 }
