@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class Enemy : Actor
 {
+    public int mobId = 0;
     public EEnemyType type;
 
     public float meleeAttackRange;
@@ -165,6 +166,10 @@ public class Enemy : Actor
         
         Debug.Log(this + " onDamaged : " + damage);
         nowHp -= damage;
+
+        EnemyManager.Instance.lastHit.id = mobId;
+        EnemyManager.Instance.lastHit.hp = nowHp;
+        EnemyManager.Instance.UpdateMobInfo();
 
         if (nowHp <= 0)
         {

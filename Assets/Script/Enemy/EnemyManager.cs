@@ -3,12 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct MobInfo
+{
+    public int id;
+    public int hp;
+}
+
 public class EnemyManager : SingletonObejct<EnemyManager>
 {
+    public MobInfo lastHit = new MobInfo { id = 0, hp = 0 };
+
+    [SerializeField]
+    private int lastHitMobID;
+    [SerializeField]
+    private int lastHitMobHP;
+
     private GameObject arrowPrefab;
     private Dictionary<EEnemyType, GameObject> dicEnemyPrefab = new Dictionary<EEnemyType, GameObject>();
     private Dictionary<EEnemyType, List<Enemy>> dicEnemyList = new Dictionary<EEnemyType, List<Enemy>>();
 
+    public int LastHitMobID { get { return lastHitMobID; } }
+    public int LastHitMobHP { get { return lastHitMobHP; } }
     public GameObject ArrowPrefab { get { return arrowPrefab; } }
     public Dictionary<EEnemyType,GameObject> DicEnemyPrefab { get { return dicEnemyPrefab; } }
     public Dictionary<EEnemyType, List<Enemy>> DicEnemyList { get { return dicEnemyList; } }
@@ -16,6 +31,12 @@ public class EnemyManager : SingletonObejct<EnemyManager>
     private void Start()
     {
         LoadPrefab();
+    }
+
+    public void UpdateMobInfo()
+    {
+        lastHitMobID = lastHit.id;
+        lastHitMobHP = lastHit.hp;
     }
 
     public void LoadPrefab()
