@@ -26,6 +26,7 @@ public class Enemy : Actor
     private Transform mobTR;
     private Transform playerTR;
     private Transform firePos;
+    private GameObject arrow;
     private Animator animator;
     private NavMeshAgent navAgent;
     private BaseAI _AI;
@@ -41,6 +42,7 @@ public class Enemy : Actor
     public Animator Animator { get { return animator; } }
     public NavMeshAgent NavAgent { get { return navAgent; } }
     public BaseAI AI { get { return _AI; } }
+    public GameObject Arrow { get { return arrow; } }
 
     public int ArrowPower { get { return arrowPower; } set { arrowPower = value; } }
     public bool BReload { get { return bReload; } set { bReload = value; } }
@@ -101,6 +103,10 @@ public class Enemy : Actor
                     _AI = new ArchorAI();
 
                     firePos = FindInChild("FirePos");
+
+                    arrow = FindInChild("Elven Long Bow Arrow").gameObject;
+                    arrow.SetActive(false);
+
                     OldReloadTime = reloadTime;
 
                     Status st = new Status
@@ -135,7 +141,7 @@ public class Enemy : Actor
     public void InstantiateArrow()
     {
         GameObject newArrow = Instantiate(EnemyManager.Instance.ArrowPrefab, firePos.position, Quaternion.identity);
-        newArrow.GetComponent<Arrow>().SetArrow((playerTR.position - firePos.position).normalized, 10, arrowPower);
+        newArrow.GetComponent<Arrow>().SetArrow((playerTR.position - firePos.position).normalized, 10, arrowPower, playerTR);
     }
 
     private void CalcReloadTime()

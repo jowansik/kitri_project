@@ -31,10 +31,13 @@ public class Arrow : MonoBehaviour
         Destroy(this.gameObject);   // todo : 오브젝트 풀 만들기
     }
 
-    public void SetArrow(Vector3 _dir, float _speed, int _power)
+    public void SetArrow(Vector3 _dir, float _speed, int _power, Transform _playerTR)
     {
         dir = _dir;
         speed = _speed;
         power = _power;
+
+        transform.LookAt(_playerTR);
+        transform.Rotate(new Vector3(-90, 0, 0));
     }
 }

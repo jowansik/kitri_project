@@ -8,12 +8,16 @@ public class ArrowAttackState : IState
     {
         parent = _parent;
 
+        parent.Arrow.SetActive(true);
+
         coroutine = parent.StartCoroutine(CheckMobState());
     }
 
     public override void Exit()
     {
         parent.StopCoroutine(coroutine);
+
+        parent.Arrow.SetActive(false);
 
         parent.BReload = true;
     }

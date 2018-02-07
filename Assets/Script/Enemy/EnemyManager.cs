@@ -20,7 +20,7 @@ public class EnemyManager : SingletonObejct<EnemyManager>
 
     public void LoadPrefab()
     {
-        arrowPrefab = Resources.Load("jws/Prefab/arrow") as GameObject;
+        arrowPrefab = Resources.Load("jws/Prefab/Arrow2") as GameObject;
 
         if (arrowPrefab == null)
             Debug.LogError("프리팹 로드 실패 : arrow");
