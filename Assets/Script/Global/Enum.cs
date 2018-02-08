@@ -47,5 +47,7 @@ public enum EEnemyState
     State_Follow,
     State_Wander,
     State_ArrowAttack,
+    State_UpperHit,
+    State_Skill,
     MAX
 }

@@ -7,19 +7,19 @@ public class MeleeAttackState : IState
     public override void Enter(Enemy _parent)
     {
         parent = _parent;
-        
+
         coroutine = parent.StartCoroutine(CheckMobState());
     }
 
     public override void Exit()
     {
-        parent.StopCoroutine(coroutine);        
+        parent.StopCoroutine(coroutine);
     }
 
     public override void Update()
     {
         base.Update();
-        
+
         // 공격 시작시 방향 전환
         if ((normalizedTime * 10.0f) % 10 < 1f)
         {

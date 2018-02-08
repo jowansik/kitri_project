@@ -18,6 +18,8 @@ public class BaseAI
     public virtual void Follow() { ChangeState(EEnemyState.State_Follow); }
     public virtual void Wander() { ChangeState(EEnemyState.State_Wander); }
     public virtual void ArrowAttack() { ChangeState(EEnemyState.State_ArrowAttack); }
+    public virtual void UpperHit() { ChangeState(EEnemyState.State_UpperHit); }
+    public virtual void SkillState() { ChangeState(EEnemyState.State_Skill); }
 
     public virtual void UpdateAI()
     {
@@ -37,13 +39,13 @@ public class BaseAI
         if (currentState != null)
         {
             currentState.Exit();
-            //Debug.Log("Exit State : " + currentState.ToString());
+            Debug.Log("Exit State : " + currentState.ToString());
         }
 
         currentState = newState;
 
         currentState.Enter(enemy);
-        //Debug.Log("Enter State : " + newState.ToString());
+        Debug.Log("Enter State : " + newState.ToString());
 
         ChangeAnimation(eState);
     }

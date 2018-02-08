@@ -44,6 +44,13 @@ public class EnemyManager : SingletonObejct<EnemyManager>
         lastHitMobMaxHP = lastHit.maxHp;
     }
 
+    public void ResetMobInfo()
+    {
+        lastHitMobID = 0;
+        lastHitMobHP = 0;
+        lastHitMobMaxHP = 0;
+    }
+
     public void LoadPrefab()
     {
         arrowPrefab = Resources.Load("jws/Prefab/Arrow") as GameObject;

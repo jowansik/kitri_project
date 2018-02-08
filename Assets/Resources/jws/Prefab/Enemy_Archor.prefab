@@ -702,9 +702,9 @@ GameObject:
   - component: {fileID: 4876821834475518}
   - component: {fileID: 95982530316806312}
   - component: {fileID: 114766308976804080}
-  - component: {fileID: 136205017658023624}
+  - component: {fileID: 136286617519239878}
+  - component: {fileID: 136585407908085082}
   - component: {fileID: 54242884722963386}
-  - component: {fileID: 136102086495627948}
   m_Layer: 13
   m_Name: Enemy_Archor
   m_TagString: Enemy
@@ -1799,7 +1799,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 122
   m_CollisionDetection: 0
 --- !u!95 &95982530316806312
 Animator:
@@ -1842,6 +1842,7 @@ MonoBehaviour:
   nowMp: 0
   nowPower: 0
   mobId: 0
+  skillPoint: 0
   type: 1
   meleeAttackRange: 2
   arrowAttackRange: 20
@@ -1850,6 +1851,8 @@ MonoBehaviour:
   maxAggroRadius: 10
   wanderingTime: 2
   reloadTime: 2
+  physicsCollider: {fileID: 136286617519239878}
+  triggerCollider: {fileID: 136585407908085082}
 --- !u!135 &135180467152134838
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -1862,20 +1865,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.15
   m_Center: {x: 0, y: 0, z: 0}
---- !u!136 &136102086495627948
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1786619207215984}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.8, z: 0}
---- !u!136 &136205017658023624
+--- !u!136 &136286617519239878
 CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1888,6 +1878,19 @@ CapsuleCollider:
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!136 &136585407908085082
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1786619207215984}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!137 &137051196181059084
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

@@ -671,8 +671,8 @@ GameObject:
   - component: {fileID: 95746365817330752}
   - component: {fileID: 114439235908610400}
   - component: {fileID: 136160670574935430}
-  - component: {fileID: 54506302031275030}
   - component: {fileID: 136346115030619188}
+  - component: {fileID: 54506302031275030}
   m_Layer: 13
   m_Name: Enemy_Melee
   m_TagString: Enemy
@@ -1612,6 +1612,7 @@ MonoBehaviour:
   nowMp: 0
   nowPower: 0
   mobId: 0
+  skillPoint: 0
   type: 0
   meleeAttackRange: 2
   arrowAttackRange: 0
@@ -1620,6 +1621,8 @@ MonoBehaviour:
   maxAggroRadius: 20
   wanderingTime: 2
   reloadTime: 0
+  physicsCollider: {fileID: 136160670574935430}
+  triggerCollider: {fileID: 136346115030619188}
 --- !u!114 &114553401362631018
 MonoBehaviour:
   m_ObjectHideFlags: 1

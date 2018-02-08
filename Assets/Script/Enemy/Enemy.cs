@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class Enemy : Actor
 {
     public int mobId = 0;
+    public float skillPoint = 0f;
     public EEnemyType type;
 
     public float meleeAttackRange;
@@ -21,11 +22,19 @@ public class Enemy : Actor
     public float reloadTime;
     private float OldReloadTime;
     private int arrowPower;
-    private bool bReload = false;   // 쏘고나서 장전
+    private bool bReload = false;
     //public float runawayRange;
 
+    private bool bUpperHit = false;
+    private bool bIsFalling = false;
+   // private bool bFallingEndFlag = false;
+    private Vector3 prePos;
     private Transform mobTR;
     private Transform playerTR;
+    [SerializeField]
+    private CapsuleCollider physicsCollider;
+    [SerializeField]
+    private CapsuleCollider triggerCollider;
     private Transform firePos;
     private GameObject arrow;
     private Animator animator;
@@ -39,6 +48,8 @@ public class Enemy : Actor
     public Dictionary<EEnemyState, IState> DicState { get { return dicState; } }
     public Transform MobTR { get { return mobTR; } set { mobTR = value; } }
     public Transform PlayerTR { get { return playerTR; } set { playerTR = value; } }
+    public CapsuleCollider PhysicsCollider { get { return physicsCollider; } }
+    public CapsuleCollider TriggerCollider { get { return triggerCollider; } }
     public Transform FirePos { get { return firePos; } }
     public Animator Animator { get { return animator; } }
     public NavMeshAgent NavAgent { get { return navAgent; } }
@@ -47,13 +58,16 @@ public class Enemy : Actor
 
     public int ArrowPower { get { return arrowPower; } set { arrowPower = value; } }
     public bool BReload { get { return bReload; } set { bReload = value; } }
-    
+    public bool BUpperHit { get { return bUpperHit; } set { bUpperHit = value; } }
+    public bool BIsFalling { get { return bIsFalling; } set { bIsFalling = value; } }
+    //public bool BFallingEndFlag { get { return bFallingEndFlag; } }
+
     private void Start()
     {
         mobTR = transform.parent.GetComponent<Transform>();
         playerTR = GameObject.FindWithTag("Player").GetComponent<Transform>();
         animator = GetComponent<Animator>();
-        navAgent = GetComponentInParent<NavMeshAgent>();
+        navAgent = GetComponentInParent<NavMeshAgent>();        
 
         Init();
 
@@ -62,17 +76,30 @@ public class Enemy : Actor
 
     private void Update()
     {
+        if (IsAlive == false)
+            return;
+
+        skillPoint += Time.deltaTime * 20;
+
+        if (skillPoint > 100)
+        {
+            skillPoint = 0f;
+
+            Skill();
+        }
+
         _AI.UpdateAI();
 
         if (bReload)
         {
             CalcReloadTime();
         }
+    }
 
-        if (!CalcIsGround())
-        {
-            _AI.Die();
-        }
+    private void LateUpdate()
+    {
+        prePos = transform.position;
+        //bFallingEndFlag = false;
     }
 
     public override void Init()
@@ -88,7 +115,7 @@ public class Enemy : Actor
                     Status st = new Status
                     {
                         hp = 1000,
-                        mp = 200,
+                        mp = 100,
                         power = 30
                     };
 
@@ -109,7 +136,7 @@ public class Enemy : Actor
                     Status st = new Status
                     {
                         hp = 800,
-                        mp = 150,
+                        mp = 100,
                         power = 5
                     };
 
@@ -155,16 +182,31 @@ public class Enemy : Actor
         }
     }
 
-    private bool CalcIsGround()
+    public bool CalcIsGround()
     {
         float tmp = mobTR.position.y - transform.position.y;
 
         if (tmp < 0.1f && tmp > -0.1f)
+        {
             isGrounded = true;
+            //bIsFalling = false;
+        }
         else
             isGrounded = false;
 
         return isGrounded;
+    }
+
+    public bool CalcIsFalling()
+    {
+        if (transform.position.y < prePos.y)
+            bIsFalling = true;
+        else
+        {
+            bIsFalling = false;
+        }
+
+        return bIsFalling;
     }
 
     public override void onDamaged(int damage)
@@ -193,9 +235,19 @@ public class Enemy : Actor
             }
         }
 
-        EnemyManager.Instance.lastHit.id = mobId;
-        EnemyManager.Instance.lastHit.hp = nowHp;
-        EnemyManager.Instance.lastHit.maxHp = hp;
+        if (isAlive)
+        {
+            EnemyManager.Instance.lastHit.id = mobId;
+            EnemyManager.Instance.lastHit.hp = nowHp;
+            EnemyManager.Instance.lastHit.maxHp = hp;
+        }
+        else
+        {
+            EnemyManager.Instance.lastHit.id = 0;
+            EnemyManager.Instance.lastHit.hp = 0;
+            EnemyManager.Instance.lastHit.maxHp = 0;
+        }
+
         EnemyManager.Instance.UpdateMobInfo();
     }
 
@@ -207,7 +259,7 @@ public class Enemy : Actor
 
     public override void Skill()
     {
-        base.Skill();
+
     }
 
     public override object GetData(string keyData, params object[] datas)
@@ -252,8 +304,13 @@ public class Enemy : Actor
             new DieState(),
             new FollowState(),
             new WanderState(),
-            new ArrowAttackState()
+            new ArrowAttackState(),
+            new UpperHitState(),
+            new SkillState()
         };
+
+        if (listStates.Count != (int)EEnemyState.MAX)
+            Debug.LogError("State 갯수 불일치");
 
         dicState = new Dictionary<EEnemyState, IState>();
         for (int i = 0; i < (int)EEnemyState.MAX; i++)
@@ -270,12 +327,10 @@ public class Enemy : Actor
                 ListAttackColliders.Add(FindInChild("AttackColliderRightArm").GetComponent<Collider>());
                 break;
             case EEnemyType.Enemy_Archor:
-                // ListAttackColliders.Add(FindInChild("AttackColliderLeftLeg").GetComponent<Collider>());
+                //ListAttackColliders.Add(FindInChild("AttackColliderLeftLeg").GetComponent<Collider>());
                 ListAttackColliders.Add(FindInChild("AttackColliderRightLeg").GetComponent<Collider>());
                 break;
             case EEnemyType.Enemy_Boss:
-                break;
-            case EEnemyType.MAX:
                 break;
             default:
                 break;
@@ -297,6 +352,11 @@ public class Enemy : Actor
         //    gameObject.GetComponent<Rigidbody>().AddForce(tmp);
         //    Debug.Log("충돌");
         //}
+
+        //Debug.Log(other);
+
+        //if (other.tag == "Player")
+        //    UpperHit(200);
     }
 
     public void LookPlayer()
@@ -307,5 +367,15 @@ public class Enemy : Actor
         look.SetLookRotation(dir);
 
         MobTR.rotation = look;
+    }
+
+    public override void UpperHit(int _power)
+    {
+        Vector3 tmp = Vector3.up * _power;
+
+        gameObject.GetComponent<Rigidbody>().AddForce(tmp);
+
+        bUpperHit = true;
+        _AI.UpperHit();
     }
 }

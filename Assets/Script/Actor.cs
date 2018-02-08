@@ -216,4 +216,9 @@ public class Actor : MyBaseObejct
 
         //print("Attackend!");
     }
+
+    public virtual void UpperHit(int _power)
+    {
+
+    }
 }
