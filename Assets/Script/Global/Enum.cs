@@ -4,8 +4,10 @@ using UnityEngine;
 
 public enum EEquipmentState
 {
-    CharEqState_Fight = 0,
-    CharEqState_Sword = 1,
+    CharEqState_Fight ,
+    CharEqState_Sword ,
+    CharEqState_Gun,
+    CharEqState_End
 }
 public enum ECharaterState
 {
@@ -24,8 +26,16 @@ public enum EAttackColliderIndex
 }
 public enum EBaseObjectState
 {
-    objectState_Normal,
+    ObjectState_Normal,
     ObjectState_Die,
+}
+
+public enum EButtonList
+{
+    EBL_AttackA,
+    EBL_AttackB,
+    EBL_Skill,
+    EBL_Jump,
 }
 
 public enum EEnemyType
@@ -33,7 +43,7 @@ public enum EEnemyType
     Enemy_Melee,
     Enemy_Archor,
     Enemy_Boss,
-    MAX
+	MAX
 }
 
 public enum EEnemyState
