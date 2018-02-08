@@ -58,7 +58,10 @@ public class IdleState : IState
 
                         if (dist <= parent.meleeAttackRange)
                         {
-                            parent.AI.MeleeAttack();
+                            if (parent.BSkillReady)
+                                parent.AI.SkillState();
+                            else
+                                parent.AI.MeleeAttack();
                         }
 
                         else if (dist < parent.aggroRadius)
@@ -78,7 +81,10 @@ public class IdleState : IState
 
                         else if (dist < parent.arrowAttackRange && parent.BReload == false)
                         {
-                            parent.AI.ArrowAttack();
+                            if (parent.BSkillReady)
+                                parent.AI.SkillState();
+                            else
+                                parent.AI.ArrowAttack();
                         }
                     }
                     break;

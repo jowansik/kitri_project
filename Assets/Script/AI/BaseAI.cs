@@ -39,13 +39,13 @@ public class BaseAI
         if (currentState != null)
         {
             currentState.Exit();
-            Debug.Log("Exit State : " + currentState.ToString());
+            //Debug.Log("Exit State : " + currentState.ToString());
         }
 
         currentState = newState;
 
         currentState.Enter(enemy);
-        Debug.Log("Enter State : " + newState.ToString());
+        //Debug.Log("Enter State : " + newState.ToString());
 
         ChangeAnimation(eState);
     }

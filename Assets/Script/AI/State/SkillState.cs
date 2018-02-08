@@ -6,6 +6,8 @@ public class SkillState : IState
 {
     public override void Enter(Enemy _parent)
     {
+        Debug.Log("스킬");
+
         parent = _parent;
 
         coroutine = parent.StartCoroutine(CheckMobState());
@@ -27,6 +29,25 @@ public class SkillState : IState
         {
             yield return new WaitForSeconds(0.2f);
 
+            switch (parent.type)
+            {
+                case EEnemyType.Enemy_Melee:
+                    {
+                        if (normalizedTime >= 0.9f)
+                            parent.AI.Idle();
+                    }
+                    break;
+                case EEnemyType.Enemy_Archor:
+                    {
+                        if (normalizedTime >= 0.9f)
+                            parent.AI.Idle();
+                    }
+                    break;
+                case EEnemyType.Enemy_Boss:
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

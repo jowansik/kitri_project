@@ -1843,6 +1843,7 @@ MonoBehaviour:
   nowPower: 0
   mobId: 0
   skillPoint: 0
+  skillChargeTime: 5
   type: 1
   meleeAttackRange: 2
   arrowAttackRange: 20

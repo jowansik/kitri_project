@@ -7,6 +7,7 @@ public class Enemy : Actor
 {
     public int mobId = 0;
     public float skillPoint = 0f;
+    public float skillChargeTime = 5f;
     public EEnemyType type;
 
     public float meleeAttackRange;
@@ -27,7 +28,8 @@ public class Enemy : Actor
 
     private bool bUpperHit = false;
     private bool bIsFalling = false;
-   // private bool bFallingEndFlag = false;
+    // private bool bFallingEndFlag = false;
+    private bool bSkillReady = false;
     private Vector3 prePos;
     private Transform mobTR;
     private Transform playerTR;
@@ -61,13 +63,14 @@ public class Enemy : Actor
     public bool BUpperHit { get { return bUpperHit; } set { bUpperHit = value; } }
     public bool BIsFalling { get { return bIsFalling; } set { bIsFalling = value; } }
     //public bool BFallingEndFlag { get { return bFallingEndFlag; } }
+    public bool BSkillReady { get { return bSkillReady; } set { bSkillReady = value; } }
 
     private void Start()
     {
         mobTR = transform.parent.GetComponent<Transform>();
         playerTR = GameObject.FindWithTag("Player").GetComponent<Transform>();
         animator = GetComponent<Animator>();
-        navAgent = GetComponentInParent<NavMeshAgent>();        
+        navAgent = GetComponentInParent<NavMeshAgent>();
 
         Init();
 
@@ -79,13 +82,14 @@ public class Enemy : Actor
         if (IsAlive == false)
             return;
 
-        skillPoint += Time.deltaTime * 20;
+        if (bSkillReady == false)
+            skillPoint += Time.deltaTime * (100 / skillChargeTime);
 
         if (skillPoint > 100)
         {
-            skillPoint = 0f;
+            skillPoint = 100f;
 
-            Skill();
+            bSkillReady = true;
         }
 
         _AI.UpdateAI();
@@ -255,6 +259,8 @@ public class Enemy : Actor
     {
         _AI.Die();
         isAlive = false;
+
+        Invoke("Kill", 1.5f);
     }
 
     public override void Skill()
@@ -377,5 +383,10 @@ public class Enemy : Actor
 
         bUpperHit = true;
         _AI.UpperHit();
+    }
+    
+    private void Kill()
+    {
+        Destroy(gameObject);
     }
 }
