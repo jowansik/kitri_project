@@ -386,7 +386,7 @@ public class Enemy : Actor
         //Debug.Log(other);
 
         //if (other.tag == "Player")
-        //    UpperHit(200);
+        //   UpperHit(200);
     }
 
     public void LookPlayer()
@@ -401,6 +401,8 @@ public class Enemy : Actor
 
     public override void UpperHit(int _power)
     {
+        Invoke("SwitchPhysicsCollider", 0.2f);
+
         Vector3 tmp = Vector3.up * _power;
 
         //rigidBody.useGravity = true;
@@ -410,7 +412,7 @@ public class Enemy : Actor
         ResetLocalPos();
 
         bUpperHit = true;
-        _AI.UpperHit();
+        _AI.UpperHit();        
     }
 
     private void Kill()
@@ -421,5 +423,12 @@ public class Enemy : Actor
     public void ResetLocalPos()
     {
         transform.localPosition = Vector3.zero;
+    }
+
+    public bool SwitchPhysicsCollider()
+    {
+        physicsCollider.enabled = !physicsCollider.enabled;
+
+        return physicsCollider.enabled;
     }
 }

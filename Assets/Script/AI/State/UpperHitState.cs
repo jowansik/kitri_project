@@ -19,9 +19,7 @@ public class UpperHitState : IState
         parent = _parent;
 
         orgCollHeight = parent.TriggerCollider.height;
-
         parent.TriggerCollider.height = collHeight;
-        
         orgParentLocalPos = parent.transform.localPosition;
 
         coroutine = parent.StartCoroutine(CheckMobState());
@@ -45,6 +43,8 @@ public class UpperHitState : IState
     {
         if (bLand)
         {
+            parent.SwitchPhysicsCollider(); // off
+
             parent.transform.localPosition = orgParentLocalPos;
 
             bLand = false;
@@ -70,12 +70,12 @@ public class UpperHitState : IState
         while (parent.IsAlive == true)
         {
             yield return new WaitForSeconds(0.2f);
-            
+
             if (bCoroutineFlag)
             {
                 parent.Animator.SetBool("UpperHitEnd", true);
 
-                yield return new WaitForSeconds(0.2f);  // normalizedTime 초기화 대기
+                yield return new WaitForSeconds(0.3f);  // normalizedTime 초기화 대기
 
                 bStandUpFlag = true;
             }
