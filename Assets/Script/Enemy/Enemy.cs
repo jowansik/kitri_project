@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class Enemy : Actor
 {
+    public bool StatusInit = false;
     public Vector3 MobTRPos;
     public Vector3 transformPos;
     public Vector3 localPos;
@@ -131,14 +132,17 @@ public class Enemy : Actor
                 {
                     _AI = new MeleeAI();
 
-                    Status st = new Status
+                    if (StatusInit)
                     {
-                        hp = 1000,
-                        mp = 100,
-                        power = 30
-                    };
+                        Status st = new Status
+                        {
+                            hp = 1000,
+                            mp = 100,
+                            power = 30
+                        };
 
-                    base.StatusInit(st);
+                        base.StatusInit(st);
+                    }
                 }
                 break;
             case EEnemyType.Enemy_Archer:
@@ -152,15 +156,17 @@ public class Enemy : Actor
 
                     OldReloadTime = reloadTime;
 
-                    Status st = new Status
+                    if (StatusInit)
                     {
-                        hp = 800,
-                        mp = 100,
-                        power = 5
-                    };
+                        Status st = new Status
+                        {
+                            hp = 800,
+                            mp = 100,
+                            power = 5
+                        };
 
-                    base.StatusInit(st);
-
+                        base.StatusInit(st);
+                    }
                     arrowPower = 20;
                 }
                 break;
