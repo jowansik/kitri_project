@@ -10,6 +10,8 @@ public class SkillState : IState
 
         parent = _parent;
 
+        parent.skillPoint = 0f;
+
         coroutine = parent.StartCoroutine(CheckMobState());
     }
 
@@ -34,13 +36,19 @@ public class SkillState : IState
                 case EEnemyType.Enemy_Melee:
                     {
                         if (normalizedTime >= 0.9f)
+                        {
+                            parent.BSkillReady = false;
                             parent.AI.Idle();
+                        }
                     }
                     break;
-                case EEnemyType.Enemy_Archor:
+                case EEnemyType.Enemy_Archer:
                     {
                         if (normalizedTime >= 0.9f)
+                        {
+                            parent.BSkillReady = false;
                             parent.AI.Idle();
+                        }
                     }
                     break;
                 case EEnemyType.Enemy_Boss:

@@ -50,7 +50,7 @@ public class MeleeAttackState : IState
                         }
                     }
                     break;
-                case EEnemyType.Enemy_Archor:
+                case EEnemyType.Enemy_Archer:
                     {
                         float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
 

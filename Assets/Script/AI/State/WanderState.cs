@@ -72,7 +72,7 @@ public class WanderState : IState
                         }
                     }
                     break;
-                case EEnemyType.Enemy_Archor:
+                case EEnemyType.Enemy_Archer:
                     break;
                 case EEnemyType.Enemy_Boss:
                     break;

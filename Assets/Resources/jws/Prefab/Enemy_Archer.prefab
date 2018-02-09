@@ -444,9 +444,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4488172747192618}
   - component: {fileID: 135180467152134838}
-  m_Layer: 0
+  - component: {fileID: 114828299750645668}
+  m_Layer: 14
   m_Name: AttackColliderRightLeg
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -491,7 +492,7 @@ GameObject:
   - component: {fileID: 4110081531863466}
   - component: {fileID: 195743383752160300}
   m_Layer: 0
-  m_Name: Enemy_Archor
+  m_Name: Enemy_Archer
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -706,7 +707,7 @@ GameObject:
   - component: {fileID: 136585407908085082}
   - component: {fileID: 54242884722963386}
   m_Layer: 13
-  m_Name: Enemy_Archor
+  m_Name: Enemy_Archer
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1854,6 +1855,18 @@ MonoBehaviour:
   reloadTime: 2
   physicsCollider: {fileID: 136286617519239878}
   triggerCollider: {fileID: 136585407908085082}
+--- !u!114 &114828299750645668
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1456580428069294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b40cd463498c33f4eb5aec412aa67ced, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackState: 0
 --- !u!135 &135180467152134838
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -1861,7 +1874,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1456580428069294}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.15

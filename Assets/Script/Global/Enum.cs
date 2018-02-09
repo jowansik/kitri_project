@@ -41,7 +41,7 @@ public enum EButtonList
 public enum EEnemyType
 {
     Enemy_Melee,
-    Enemy_Archor,
+    Enemy_Archer,
     Enemy_Boss,
 	MAX
 }

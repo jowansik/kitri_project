@@ -19,7 +19,7 @@ public class Enemy : Actor
     // Melee
     public float wanderingTime;
 
-    // Archor
+    // Archer
     public float reloadTime;
     private float OldReloadTime;
     private int arrowPower;
@@ -30,6 +30,7 @@ public class Enemy : Actor
     private bool bIsFalling = false;
     // private bool bFallingEndFlag = false;
     private bool bSkillReady = false;
+    private Vector3 arrowOffset = Vector3.up * 0.5f;
     private Vector3 prePos;
     private Transform mobTR;
     private Transform playerTR;
@@ -126,9 +127,9 @@ public class Enemy : Actor
                     base.StatusInit(st);
                 }
                 break;
-            case EEnemyType.Enemy_Archor:
+            case EEnemyType.Enemy_Archer:
                 {
-                    _AI = new ArchorAI();
+                    _AI = new ArcherAI();
 
                     firePos = FindInChild("FirePos");
 
@@ -169,7 +170,7 @@ public class Enemy : Actor
     public void InstantiateArrow()
     {
         GameObject newArrow = Instantiate(EnemyManager.Instance.ArrowPrefab, firePos.position, Quaternion.identity);
-        newArrow.GetComponent<Arrow>().SetArrow((playerTR.position - firePos.position).normalized, 10, arrowPower, playerTR);
+        newArrow.GetComponent<Arrow>().SetArrow(((playerTR.position + arrowOffset) - firePos.position).normalized, 10, arrowPower, playerTR, arrowOffset);
     }
 
     private void CalcReloadTime()
@@ -332,7 +333,7 @@ public class Enemy : Actor
                 //ListAttackColliders.Add(FindInChild("AttackColliderLeftArm").GetComponent<Collider>());
                 ListAttackColliders.Add(FindInChild("AttackColliderRightArm").GetComponent<Collider>());
                 break;
-            case EEnemyType.Enemy_Archor:
+            case EEnemyType.Enemy_Archer:
                 //ListAttackColliders.Add(FindInChild("AttackColliderLeftLeg").GetComponent<Collider>());
                 ListAttackColliders.Add(FindInChild("AttackColliderRightLeg").GetComponent<Collider>());
                 break;
@@ -384,7 +385,7 @@ public class Enemy : Actor
         bUpperHit = true;
         _AI.UpperHit();
     }
-    
+
     private void Kill()
     {
         Destroy(gameObject);

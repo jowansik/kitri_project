@@ -46,7 +46,7 @@ public class ArrowAttackState : IState
             {
                 case EEnemyType.Enemy_Melee:
                     break;
-                case EEnemyType.Enemy_Archor:
+                case EEnemyType.Enemy_Archer:
                     {
                         float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
 

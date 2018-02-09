@@ -23,7 +23,7 @@ public class IdleState : IState
 
     public override void Update()
     {
-        if (parent.type == EEnemyType.Enemy_Archor)
+        if (parent.type == EEnemyType.Enemy_Archer)
         {
             //Quaternion look = Quaternion.identity;
             //Vector3 dir = (parent.PlayerTR.position - parent.MobTR.position).normalized;
@@ -70,7 +70,7 @@ public class IdleState : IState
                         }
                     }
                     break;
-                case EEnemyType.Enemy_Archor:
+                case EEnemyType.Enemy_Archer:
                     {
                         float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
 
