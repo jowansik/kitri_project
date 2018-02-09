@@ -298,20 +298,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 1537108501334146, guid: 8913489516824f24789d272fe11245f9, type: 2}
-      propertyPath: m_Name
-      value: Enemy_Archer
-      objectReference: {fileID: 0}
-    - target: {fileID: 54242884722963386, guid: 8913489516824f24789d272fe11245f9,
-        type: 2}
-      propertyPath: m_UseGravity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 54242884722963386, guid: 8913489516824f24789d272fe11245f9,
-        type: 2}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8913489516824f24789d272fe11245f9, type: 2}
   m_IsPrefabParent: 0
@@ -463,7 +449,7 @@ GameObject:
   - component: {fileID: 857754835}
   m_Layer: 0
   m_Name: Floor
-  m_TagString: Untagged
+  m_TagString: Stage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -927,14 +913,6 @@ Prefab:
     - target: {fileID: 4356858375406968, guid: 80eca1c8247496946a3a4f6013114fdd, type: 2}
       propertyPath: m_RootOrder
       value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1602988963757338, guid: 80eca1c8247496946a3a4f6013114fdd, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1400482147319712, guid: 80eca1c8247496946a3a4f6013114fdd, type: 2}
-      propertyPath: m_TagString
-      value: Enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 80eca1c8247496946a3a4f6013114fdd, type: 2}

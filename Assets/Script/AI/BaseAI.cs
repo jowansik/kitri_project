@@ -8,6 +8,7 @@ public class BaseAI
     private IState currentState;
 
     public Enemy Enemy { set { enemy = value; } }
+    public IState CurrentState { get { return currentState; } }
 
     public virtual void Idle() { ChangeState(EEnemyState.State_Idle); }
     public virtual void MeleeAttack() { ChangeState(EEnemyState.State_MeleeAttack); }

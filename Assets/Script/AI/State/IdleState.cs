@@ -11,7 +11,7 @@ public class IdleState : IState
         idleTime = 0f;
 
         parent = _parent;
-
+        
         coroutine = parent.StartCoroutine(CheckMobState());
     }
 
@@ -23,17 +23,17 @@ public class IdleState : IState
 
     public override void Update()
     {
-        if (parent.type == EEnemyType.Enemy_Archer)
-        {
-            //Quaternion look = Quaternion.identity;
-            //Vector3 dir = (parent.PlayerTR.position - parent.MobTR.position).normalized;
-            //dir.y = 0f;
-            //look.SetLookRotation(dir);
+        //if (parent.type == EEnemyType.Enemy_Archer)
+        //{
+        //    Quaternion look = Quaternion.identity;
+        //    Vector3 dir = (parent.PlayerTR.position - parent.MobTR.position).normalized;
+        //    dir.y = 0f;
+        //    look.SetLookRotation(dir);
 
-            //parent.MobTR.rotation = look;
+        //    parent.MobTR.rotation = look;
 
-            return;
-        }
+        //    return;
+        //}
 
         idleTime += Time.deltaTime;
 
@@ -49,6 +49,8 @@ public class IdleState : IState
         while (parent.IsAlive == true)
         {
             yield return new WaitForSeconds(0.2f);
+
+            parent.ResetLocalPos();
 
             switch (parent.type)
             {

@@ -4,17 +4,25 @@ using UnityEngine;
 
 public class UpperHitState : IState
 {
-    private bool bFlag = false;
-    private float orgHeight = 0f;
+    private bool bStandUpFlag = false;
+    private bool bCoroutineFlag = false;
+
+    private bool bLand = false;
+    private float orgCollHeight = 0f;
     private float collHeight = 0.2f;
+    private Vector3 orgParentLocalPos;
+
+    public bool BLand { get { return bLand; } set { bLand = value; } }
 
     public override void Enter(Enemy _parent)
     {
         parent = _parent;
 
-        orgHeight = parent.PhysicsCollider.height;
+        orgCollHeight = parent.TriggerCollider.height;
 
         parent.TriggerCollider.height = collHeight;
+        
+        orgParentLocalPos = parent.transform.localPosition;
 
         coroutine = parent.StartCoroutine(CheckMobState());
     }
@@ -23,18 +31,33 @@ public class UpperHitState : IState
     {
         parent.StopCoroutine(coroutine);
 
-        parent.TriggerCollider.height = orgHeight;
+        parent.TriggerCollider.height = orgCollHeight;
 
         parent.Animator.SetBool("UpperHitEnd", false);
-        bFlag = false;
+        bStandUpFlag = false;
+        bCoroutineFlag = false;
+        bLand = false;
+        orgCollHeight = 0f;
+        collHeight = 0.2f;
     }
 
     public override void Update()
     {
-        if (bFlag)
+        if (bLand)
+        {
+            parent.transform.localPosition = orgParentLocalPos;
+
+            bLand = false;
+
+            parent.RigidBody.isKinematic = true;
+
+            bCoroutineFlag = true;
+        }
+
+        else if (bStandUpFlag)
         {
             base.Update();
-            
+
             if (normalizedTime > 0.9f)
             {
                 parent.AI.Idle();
@@ -48,16 +71,13 @@ public class UpperHitState : IState
         {
             yield return new WaitForSeconds(0.2f);
             
-            if (parent.CalcIsFalling() == false && parent.CalcIsGround())
+            if (bCoroutineFlag)
             {
                 parent.Animator.SetBool("UpperHitEnd", true);
 
                 yield return new WaitForSeconds(0.2f);  // normalizedTime 초기화 대기
 
-                bFlag = true;
-
-                parent.RigidBody.useGravity = false;
-                parent.RigidBody.isKinematic = true;
+                bStandUpFlag = true;
             }
         }
     }

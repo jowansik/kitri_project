@@ -5,6 +5,10 @@ using UnityEngine.AI;
 
 public class Enemy : Actor
 {
+    public Vector3 MobTRPos;
+    public Vector3 transformPos;
+    public Vector3 localPos;
+
     public int mobId = 0;
     public float skillPoint = 0f;
     public float skillChargeTime = 5f;
@@ -31,7 +35,7 @@ public class Enemy : Actor
     // private bool bFallingEndFlag = false;
     private bool bSkillReady = false;
     private Vector3 arrowOffset = Vector3.up * 0.5f;
-    private Vector3 prePos;
+    private Vector3 preWorldPos;
     private Transform mobTR;
     private Transform playerTR;
     [SerializeField]
@@ -76,6 +80,9 @@ public class Enemy : Actor
         navAgent = GetComponentInParent<NavMeshAgent>();
         rigidBody = GetComponent<Rigidbody>();
 
+        Debug.Log(mobTR);
+        Debug.Log(transform);
+
         Init();
 
         _AI.Idle();
@@ -83,6 +90,10 @@ public class Enemy : Actor
 
     private void Update()
     {
+        MobTRPos = mobTR.position;
+        transformPos = transform.position;
+        localPos = transform.localPosition;
+
         if (IsAlive == false)
             return;
 
@@ -106,7 +117,7 @@ public class Enemy : Actor
 
     private void LateUpdate()
     {
-        prePos = transform.position;
+        preWorldPos = transform.position;
         //bFallingEndFlag = false;
     }
 
@@ -192,7 +203,7 @@ public class Enemy : Actor
 
     public bool CalcIsGround()
     {
-        float tmp = mobTR.position.y - transform.position.y;
+        float tmp = transform.localPosition.y;
 
         if (tmp < 0.1f && tmp > -0.1f)
         {
@@ -207,7 +218,7 @@ public class Enemy : Actor
 
     public bool CalcIsFalling()
     {
-        if (transform.position.y < prePos.y)
+        if (transform.position.y < preWorldPos.y)
             bIsFalling = true;
         else
         {
@@ -352,6 +363,15 @@ public class Enemy : Actor
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (_AI.CurrentState is UpperHitState && collision.transform.tag == "Stage")
+        {
+            Debug.Log("착지");
+            ((UpperHitState)_AI.CurrentState).BLand = true;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         //if (other.tag == "Player")
@@ -383,9 +403,11 @@ public class Enemy : Actor
     {
         Vector3 tmp = Vector3.up * _power;
 
-        rigidBody.useGravity = true;
+        //rigidBody.useGravity = true;
         rigidBody.isKinematic = false;
         rigidBody.AddForce(tmp);
+
+        ResetLocalPos();
 
         bUpperHit = true;
         _AI.UpperHit();
@@ -394,5 +416,10 @@ public class Enemy : Actor
     private void Kill()
     {
         Destroy(gameObject);
+    }
+
+    public void ResetLocalPos()
+    {
+        transform.localPosition = Vector3.zero;
     }
 }
