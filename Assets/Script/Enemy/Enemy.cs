@@ -43,6 +43,7 @@ public class Enemy : Actor
     private Animator animator;
     private NavMeshAgent navAgent;
     private BaseAI _AI;
+    private Rigidbody rigidBody;
 
     private List<IState> listStates;
     private Dictionary<EEnemyState, IState> dicState;
@@ -58,6 +59,7 @@ public class Enemy : Actor
     public NavMeshAgent NavAgent { get { return navAgent; } }
     public BaseAI AI { get { return _AI; } }
     public GameObject Arrow { get { return arrow; } }
+    public Rigidbody RigidBody { get { return rigidBody; } set { rigidBody = value; } }
 
     public int ArrowPower { get { return arrowPower; } set { arrowPower = value; } }
     public bool BReload { get { return bReload; } set { bReload = value; } }
@@ -72,6 +74,7 @@ public class Enemy : Actor
         playerTR = GameObject.FindWithTag("Player").GetComponent<Transform>();
         animator = GetComponent<Animator>();
         navAgent = GetComponentInParent<NavMeshAgent>();
+        rigidBody = GetComponent<Rigidbody>();
 
         Init();
 
@@ -380,7 +383,9 @@ public class Enemy : Actor
     {
         Vector3 tmp = Vector3.up * _power;
 
-        gameObject.GetComponent<Rigidbody>().AddForce(tmp);
+        rigidBody.useGravity = true;
+        rigidBody.isKinematic = false;
+        rigidBody.AddForce(tmp);
 
         bUpperHit = true;
         _AI.UpperHit();

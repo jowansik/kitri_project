@@ -55,6 +55,9 @@ public class UpperHitState : IState
                 yield return new WaitForSeconds(0.2f);  // normalizedTime 초기화 대기
 
                 bFlag = true;
+
+                parent.RigidBody.useGravity = false;
+                parent.RigidBody.isKinematic = true;
             }
         }
     }

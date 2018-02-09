@@ -302,6 +302,16 @@ Prefab:
       propertyPath: m_Name
       value: Enemy_Archer
       objectReference: {fileID: 0}
+    - target: {fileID: 54242884722963386, guid: 8913489516824f24789d272fe11245f9,
+        type: 2}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 54242884722963386, guid: 8913489516824f24789d272fe11245f9,
+        type: 2}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8913489516824f24789d272fe11245f9, type: 2}
   m_IsPrefabParent: 0
