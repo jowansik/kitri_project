@@ -5,13 +5,13 @@ using UnityEngine;
 public class IdleState : IState
 {
     private float idleTime;
-
+    
     public override void Enter(Enemy _parent)
     {
         idleTime = 0f;
 
         parent = _parent;
-        
+
         coroutine = parent.StartCoroutine(CheckMobState());
     }
 
@@ -23,19 +23,15 @@ public class IdleState : IState
 
     public override void Update()
     {
-        //if (parent.type == EEnemyType.Enemy_Archer)
-        //{
-        //    Quaternion look = Quaternion.identity;
-        //    Vector3 dir = (parent.PlayerTR.position - parent.MobTR.position).normalized;
-        //    dir.y = 0f;
-        //    look.SetLookRotation(dir);
-
-        //    parent.MobTR.rotation = look;
-
-        //    return;
-        //}
-
         idleTime += Time.deltaTime;
+
+        if (parent.type == EEnemyType.Enemy_Archer)
+        {
+            if (idleTime > 3f)
+                parent.BRunaway = true;
+
+            return;
+        }
 
         if (idleTime > parent.wanderingTime)
         {
@@ -56,7 +52,7 @@ public class IdleState : IState
             {
                 case EEnemyType.Enemy_Melee:
                     {
-                        float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
+                        float dist = Vector3.Distance(parent.NavTR.position, parent.PlayerTR.position);
 
                         if (dist <= parent.meleeAttackRange)
                         {
@@ -74,7 +70,7 @@ public class IdleState : IState
                     break;
                 case EEnemyType.Enemy_Archer:
                     {
-                        float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
+                        float dist = Vector3.Distance(parent.NavTR.position, parent.PlayerTR.position);
 
                         if (dist <= parent.meleeAttackRange)
                         {

@@ -45,7 +45,7 @@ public class FollowState : IState
         {
             yield return new WaitForSeconds(0.2f);
 
-            float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
+            float dist = Vector3.Distance(parent.NavTR.position, parent.PlayerTR.position);
 
             // y축 감지 ?
             if (dist < parent.aggroRadius && dist > parent.meleeAttackRange)

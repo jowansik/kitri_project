@@ -27,13 +27,13 @@ public class ArrowAttackState : IState
         base.Update();
 
         Quaternion look = Quaternion.identity;
-        Vector3 dir = parent.PlayerTR.position - parent.MobTR.position;
+        Vector3 dir = parent.PlayerTR.position - parent.NavTR.position;
         dir.y = 0f;
         dir = dir.normalized;
 
         look.SetLookRotation(dir);
 
-        parent.MobTR.rotation = look;
+        parent.NavTR.rotation = look;
     }
 
     public override IEnumerator CheckMobState()
@@ -48,7 +48,7 @@ public class ArrowAttackState : IState
                     break;
                 case EEnemyType.Enemy_Archer:
                     {
-                        float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
+                        float dist = Vector3.Distance(parent.NavTR.position, parent.PlayerTR.position);
 
                         if (dist <= parent.meleeAttackRange)
                         {
@@ -72,8 +72,6 @@ public class ArrowAttackState : IState
 
     public void Shoot()
     {
-        //Debug.Log("Shoot");
-
         parent.InstantiateArrow();
     }
 }

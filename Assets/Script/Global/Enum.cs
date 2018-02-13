@@ -59,5 +59,6 @@ public enum EEnemyState
     State_ArrowAttack,
     State_UpperHit,
     State_Skill,
+    State_Runaway,
     MAX
 }

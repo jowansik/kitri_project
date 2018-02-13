@@ -24,11 +24,11 @@ public class MeleeAttackState : IState
         if ((normalizedTime * 10.0f) % 10 < 1f)
         {
             Quaternion look = Quaternion.identity;
-            Vector3 dir = (parent.PlayerTR.position - parent.MobTR.position).normalized;
+            Vector3 dir = (parent.PlayerTR.position - parent.NavTR.position).normalized;
             dir.y = 0f;
             look.SetLookRotation(dir);
 
-            parent.MobTR.rotation = look;
+            parent.NavTR.rotation = look;
         }
     }
 
@@ -42,7 +42,12 @@ public class MeleeAttackState : IState
             {
                 case EEnemyType.Enemy_Melee:
                     {
-                        float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
+                        float dist = Vector3.Distance(parent.NavTR.position, parent.PlayerTR.position);
+
+                        if (parent.BSkillReady)
+                        {
+                            parent.AI.SkillState();
+                        }
 
                         if (dist > parent.meleeAttackRange)
                         {
@@ -52,7 +57,7 @@ public class MeleeAttackState : IState
                     break;
                 case EEnemyType.Enemy_Archer:
                     {
-                        float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
+                        float dist = Vector3.Distance(parent.NavTR.position, parent.PlayerTR.position);
 
                         if (dist > parent.meleeAttackRange)
                         {

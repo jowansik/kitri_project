@@ -10,6 +10,9 @@ public class SkillState : IState
 
         parent = _parent;
 
+        if (parent.type == EEnemyType.Enemy_Archer)
+            parent.Arrow.SetActive(true);        
+
         parent.skillPoint = 0f;
 
         coroutine = parent.StartCoroutine(CheckMobState());
@@ -17,6 +20,13 @@ public class SkillState : IState
 
     public override void Exit()
     {
+        if (parent.type == EEnemyType.Enemy_Archer)
+        {
+            parent.Arrow.SetActive(false);
+
+            parent.BReload = true;
+        }
+
         parent.StopCoroutine(coroutine);
     }
 
@@ -46,6 +56,7 @@ public class SkillState : IState
                     {
                         if (normalizedTime >= 0.9f)
                         {
+                            parent.InstantiateArrow();
                             parent.BSkillReady = false;
                             parent.AI.Idle();
                         }

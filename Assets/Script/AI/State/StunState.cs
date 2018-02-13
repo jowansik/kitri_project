@@ -11,7 +11,7 @@ public class StunState : IState
     {
         parent = _parent;
         
-        preRotation = parent.MobTR.rotation;
+        preRotation = parent.NavTR.rotation;
 
         coroutine = parent.StartCoroutine(CheckMobState());
     }
@@ -20,14 +20,14 @@ public class StunState : IState
     {
         parent.StopCoroutine(coroutine);
 
-        parent.MobTR.rotation = preRotation;
+        parent.NavTR.rotation = preRotation;
 
         stunTime = 0f;
     }
 
     public override void Update()
     {
-        parent.MobTR.rotation = preRotation;
+        parent.NavTR.rotation = preRotation;
 
         stunTime += Time.deltaTime;
 

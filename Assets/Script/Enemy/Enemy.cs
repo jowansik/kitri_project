@@ -5,8 +5,9 @@ using UnityEngine.AI;
 
 public class Enemy : Actor
 {
+    #region Variables
     public bool StatusInit = false;
-    public Vector3 MobTRPos;
+    public Vector3 NavTRPos;
     public Vector3 transformPos;
     public Vector3 localPos;
 
@@ -29,15 +30,14 @@ public class Enemy : Actor
     private float OldReloadTime;
     private int arrowPower;
     private bool bReload = false;
-    //public float runawayRange;
+    private bool bRunaway = true;
 
     private bool bUpperHit = false;
     private bool bIsFalling = false;
-    // private bool bFallingEndFlag = false;
     private bool bSkillReady = false;
     private Vector3 arrowOffset = Vector3.up * 0.5f;
     private Vector3 preWorldPos;
-    private Transform mobTR;
+    private Transform navTR;
     private Transform playerTR;
     [SerializeField]
     private CapsuleCollider physicsCollider;
@@ -49,13 +49,18 @@ public class Enemy : Actor
     private NavMeshAgent navAgent;
     private BaseAI _AI;
     private Rigidbody rigidBody;
-
+    [SerializeField]
+    private ParticleSystem sparkEffect;
+    [SerializeField]
+    private SphereCollider meleeSkillCollider;
     private List<IState> listStates;
     private Dictionary<EEnemyState, IState> dicState;
+    #endregion
 
+    #region Property
     public List<IState> ListStates { get { return listStates; } }
     public Dictionary<EEnemyState, IState> DicState { get { return dicState; } }
-    public Transform MobTR { get { return mobTR; } set { mobTR = value; } }
+    public Transform NavTR { get { return navTR; } set { navTR = value; } }
     public Transform PlayerTR { get { return playerTR; } set { playerTR = value; } }
     public CapsuleCollider PhysicsCollider { get { return physicsCollider; } }
     public CapsuleCollider TriggerCollider { get { return triggerCollider; } }
@@ -68,21 +73,19 @@ public class Enemy : Actor
 
     public int ArrowPower { get { return arrowPower; } set { arrowPower = value; } }
     public bool BReload { get { return bReload; } set { bReload = value; } }
+    public bool BRunaway { get { return bRunaway; } set { bRunaway = value; } }
     public bool BUpperHit { get { return bUpperHit; } set { bUpperHit = value; } }
     public bool BIsFalling { get { return bIsFalling; } set { bIsFalling = value; } }
-    //public bool BFallingEndFlag { get { return bFallingEndFlag; } }
     public bool BSkillReady { get { return bSkillReady; } set { bSkillReady = value; } }
+    #endregion
 
     private void Start()
     {
-        mobTR = transform.parent.GetComponent<Transform>();
+        navTR = transform.parent.GetComponent<Transform>();
         playerTR = GameObject.FindWithTag("Player").GetComponent<Transform>();
         animator = GetComponent<Animator>();
         navAgent = GetComponentInParent<NavMeshAgent>();
         rigidBody = GetComponent<Rigidbody>();
-
-        Debug.Log(mobTR);
-        Debug.Log(transform);
 
         Init();
 
@@ -91,7 +94,7 @@ public class Enemy : Actor
 
     private void Update()
     {
-        MobTRPos = mobTR.position;
+        NavTRPos = navTR.position;
         transformPos = transform.position;
         localPos = transform.localPosition;
 
@@ -99,29 +102,26 @@ public class Enemy : Actor
             return;
 
         if (bSkillReady == false)
-            skillPoint += Time.deltaTime * (100 / skillChargeTime);
+            skillPoint += Time.deltaTime * (100f / skillChargeTime);
 
         if (skillPoint > 100)
         {
             skillPoint = 100f;
-
             bSkillReady = true;
         }
 
         _AI.UpdateAI();
 
         if (bReload)
-        {
             CalcReloadTime();
-        }
     }
 
     private void LateUpdate()
     {
         preWorldPos = transform.position;
-        //bFallingEndFlag = false;
     }
 
+    #region Init Func
     public override void Init()
     {
         SetCollections();
@@ -187,137 +187,6 @@ public class Enemy : Actor
         nowMp = mp;
     }
 
-    public void InstantiateArrow()
-    {
-        GameObject newArrow = Instantiate(EnemyManager.Instance.ArrowPrefab, firePos.position, Quaternion.identity);
-        newArrow.GetComponent<Arrow>().SetArrow(((playerTR.position + arrowOffset) - firePos.position).normalized, 10, arrowPower, playerTR, arrowOffset);
-    }
-
-    private void CalcReloadTime()
-    {
-        if (reloadTime > 0)
-        {
-            reloadTime -= Time.deltaTime;
-
-            if (reloadTime <= 0)
-            {
-                bReload = false;
-                reloadTime = OldReloadTime;
-            }
-        }
-    }
-
-    public bool CalcIsGround()
-    {
-        float tmp = transform.localPosition.y;
-
-        if (tmp < 0.1f && tmp > -0.1f)
-        {
-            isGrounded = true;
-            //bIsFalling = false;
-        }
-        else
-            isGrounded = false;
-
-        return isGrounded;
-    }
-
-    public bool CalcIsFalling()
-    {
-        if (transform.position.y < preWorldPos.y)
-            bIsFalling = true;
-        else
-        {
-            bIsFalling = false;
-        }
-
-        return bIsFalling;
-    }
-
-    public override void onDamaged(int damage)
-    {
-        if (IsAlive == false)
-            return;
-
-        Debug.Log(this + " onDamaged : " + damage);
-        nowHp -= damage;
-
-        if (nowHp <= 0)
-        {
-            nowHp = 0;
-
-            onDead();
-        }
-        else
-        {
-            if (damage >= 300)
-            {
-                _AI.CriticalHit();
-            }
-            else
-            {
-                _AI.Hit();
-            }
-        }
-
-        if (isAlive)
-        {
-            EnemyManager.Instance.lastHit.id = mobId;
-            EnemyManager.Instance.lastHit.hp = nowHp;
-            EnemyManager.Instance.lastHit.maxHp = hp;
-        }
-        else
-        {
-            EnemyManager.Instance.lastHit.id = 0;
-            EnemyManager.Instance.lastHit.hp = 0;
-            EnemyManager.Instance.lastHit.maxHp = 0;
-        }
-
-        EnemyManager.Instance.UpdateMobInfo();
-    }
-
-    public override void onDead()
-    {
-        _AI.Die();
-        isAlive = false;
-
-        Invoke("Kill", 1.5f);
-    }
-
-    public override void Skill()
-    {
-
-    }
-
-    public override object GetData(string keyData, params object[] datas)
-    {
-        return base.GetData(keyData, datas);
-    }
-
-    public override void ThrowEvent(string keyData, params object[] datas)
-    {
-        base.ThrowEvent(keyData, datas);
-    }
-
-    public void Hit()
-    {
-        foreach (Collider coll in ListAttackColliders)
-        {
-            coll.gameObject.SetActive(true);
-        }
-
-        return;
-    }
-
-    public void HitEnd()
-    {
-        foreach (Collider coll in ListAttackColliders)
-        {
-            coll.gameObject.SetActive(false);
-        }
-
-        return;
-    }
 
     private void SetCollections()
     {
@@ -333,7 +202,8 @@ public class Enemy : Actor
             new WanderState(),
             new ArrowAttackState(),
             new UpperHitState(),
-            new SkillState()
+            new SkillState(),
+            new RunawayState()
         };
 
         if (listStates.Count != (int)EEnemyState.MAX)
@@ -369,6 +239,94 @@ public class Enemy : Actor
         }
     }
 
+    #endregion
+
+    #region Override
+    public override void onDamaged(int damage)
+    {
+        if (isAlive == false)
+            return;
+
+        Debug.Log(this + " onDamaged : " + damage);
+        nowHp -= damage;
+
+        if (nowHp <= 0)
+        {
+            nowHp = 0;
+            onDead();
+        }
+        else
+        {
+            if (damage >= 300)
+                _AI.CriticalHit();
+            else
+                _AI.Hit();
+        }
+
+        EnemyManager.Instance.LastHitMob = this;
+        //UpdateMobInfo();
+    }
+
+    public override void onDead()
+    {
+        _AI.Die();
+        isAlive = false;
+
+        Invoke("Kill", 1.5f);
+    }
+
+    public override void UpperHit(int _power)
+    {
+        Invoke("SwitchPhysicsCollider", 0.2f);
+
+        Vector3 tmp = Vector3.up * _power;
+
+        //rigidBody.useGravity = true;
+        rigidBody.isKinematic = false;
+        rigidBody.AddForce(tmp);
+
+        ResetLocalPos();
+
+        bUpperHit = true;
+        _AI.UpperHit();
+    }
+    #endregion
+
+    #region Private Func
+    private void CalcReloadTime()
+    {
+        if (reloadTime > 0)
+        {
+            reloadTime -= Time.deltaTime;
+
+            if (reloadTime <= 0)
+            {
+                bReload = false;
+                reloadTime = OldReloadTime;
+            }
+        }
+    }
+
+    private void UpdateMobInfo()
+    {
+        if (isAlive)
+        {
+            EnemyManager.Instance.lastHit.id = mobId;
+            EnemyManager.Instance.lastHit.hp = nowHp;
+            EnemyManager.Instance.lastHit.maxHp = hp;
+            EnemyManager.Instance.lastHit.skillPoint = skillPoint;
+        }
+        else
+        {
+            EnemyManager.Instance.lastHit.id = 0;
+            EnemyManager.Instance.lastHit.hp = 0;
+            EnemyManager.Instance.lastHit.maxHp = 0;
+            EnemyManager.Instance.lastHit.skillPoint = 0f;
+        }
+
+        EnemyManager.Instance.UpdateMobInfo();
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (_AI.CurrentState is UpperHitState && collision.transform.tag == "Stage")
@@ -392,38 +350,93 @@ public class Enemy : Actor
         //Debug.Log(other);
 
         //if (other.tag == "Player")
-        //   UpperHit(200);
-    }
-
-    public void LookPlayer()
-    {
-        Quaternion look = Quaternion.identity;
-        Vector3 dir = (PlayerTR.position - MobTR.position).normalized;
-        dir.y = 0f;
-        look.SetLookRotation(dir);
-
-        MobTR.rotation = look;
-    }
-
-    public override void UpperHit(int _power)
-    {
-        Invoke("SwitchPhysicsCollider", 0.2f);
-
-        Vector3 tmp = Vector3.up * _power;
-
-        //rigidBody.useGravity = true;
-        rigidBody.isKinematic = false;
-        rigidBody.AddForce(tmp);
-
-        ResetLocalPos();
-
-        bUpperHit = true;
-        _AI.UpperHit();        
+        //  UpperHit(200);
     }
 
     private void Kill()
     {
         Destroy(gameObject);
+    }
+    #endregion
+
+    #region Public Func
+    public void InstantiateArrow()
+    {
+        GameObject newArrow = Instantiate(EnemyManager.Instance.ArrowPrefab, firePos.position, Quaternion.identity);
+        newArrow.GetComponent<Arrow>().SetArrow(((playerTR.position + arrowOffset) - firePos.position).normalized, 10, arrowPower, playerTR, arrowOffset);
+    }
+
+    public bool CalcIsGround()
+    {
+        float tmp = transform.localPosition.y;
+
+        if (tmp < 0.1f && tmp > -0.1f)
+        {
+            isGrounded = true;
+            //bIsFalling = false;
+        }
+        else
+            isGrounded = false;
+
+        return isGrounded;
+    }
+
+    public bool CalcIsFalling()
+    {
+        if (transform.position.y < preWorldPos.y)
+            bIsFalling = true;
+        else
+        {
+            bIsFalling = false;
+        }
+
+        return bIsFalling;
+    }
+
+    public void Hit()
+    {
+        if (bSkillReady)
+        {
+            if (type == EEnemyType.Enemy_Melee)
+                meleeSkillCollider.gameObject.SetActive(true);
+        }
+        else
+        {
+            foreach (Collider coll in ListAttackColliders)
+            {
+                coll.gameObject.SetActive(true);
+            }
+        }
+
+        return;
+    }
+
+    public void HitEnd()
+    {
+        if (bSkillReady)
+        {
+            if (type == EEnemyType.Enemy_Melee)
+                meleeSkillCollider.gameObject.SetActive(false);
+        }
+        else
+        {
+            foreach (Collider coll in ListAttackColliders)
+            {
+                coll.gameObject.SetActive(false);
+            }
+        }
+
+        return;
+    }
+
+    public void LookPlayer()
+    {
+        Quaternion look = Quaternion.identity;
+        Vector3 dir = (PlayerTR.position - NavTR.position).normalized;
+        dir.y = 0f;
+        look.SetLookRotation(dir);
+
+        NavTR.rotation = look;
     }
 
     public void ResetLocalPos()
@@ -437,4 +450,11 @@ public class Enemy : Actor
 
         return physicsCollider.enabled;
     }
+
+    public void PlayEffect()
+    {
+        if (bSkillReady)
+            sparkEffect.Play();
+    }
+    #endregion
 }

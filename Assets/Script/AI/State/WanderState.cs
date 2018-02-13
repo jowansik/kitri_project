@@ -37,9 +37,9 @@ public class WanderState : IState
 
             look.SetLookRotation(moveDir);
 
-            parent.MobTR.rotation = look;
+            parent.NavTR.rotation = look;
             
-            parent.NavAgent.SetDestination(parent.MobTR.position + moveDir);
+            parent.NavAgent.SetDestination(parent.NavTR.position + moveDir);
             parent.NavAgent.isStopped = false;
         }
         else
@@ -59,7 +59,7 @@ public class WanderState : IState
             {
                 case EEnemyType.Enemy_Melee:
                     {
-                        float dist = Vector3.Distance(parent.MobTR.position, parent.PlayerTR.position);
+                        float dist = Vector3.Distance(parent.NavTR.position, parent.PlayerTR.position);
 
                         if (dist <= parent.meleeAttackRange)
                         {
