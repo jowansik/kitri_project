@@ -27,6 +27,7 @@ public class Enemy : Actor
 
     // Archer
     public float reloadTime;
+    public float runawayDist;
     private float OldReloadTime;
     private int arrowPower;
     private bool bReload = false;
@@ -47,6 +48,7 @@ public class Enemy : Actor
     private GameObject arrow;
     private Animator animator;
     private NavMeshAgent navAgent;
+    private NavMeshPath navPath;
     private BaseAI _AI;
     private Rigidbody rigidBody;
     [SerializeField]
@@ -55,6 +57,7 @@ public class Enemy : Actor
     private SphereCollider meleeSkillCollider;
     private List<IState> listStates;
     private Dictionary<EEnemyState, IState> dicState;
+    private StageManager stageManager;
     #endregion
 
     #region Property
@@ -67,6 +70,7 @@ public class Enemy : Actor
     public Transform FirePos { get { return firePos; } }
     public Animator Animator { get { return animator; } }
     public NavMeshAgent NavAgent { get { return navAgent; } }
+    public NavMeshPath NavPath { get { return navPath; } set { navPath = value; } }
     public BaseAI AI { get { return _AI; } }
     public GameObject Arrow { get { return arrow; } }
     public Rigidbody RigidBody { get { return rigidBody; } set { rigidBody = value; } }
@@ -85,7 +89,9 @@ public class Enemy : Actor
         playerTR = GameObject.FindWithTag("Player").GetComponent<Transform>();
         animator = GetComponent<Animator>();
         navAgent = GetComponentInParent<NavMeshAgent>();
+        navPath = new NavMeshPath();
         rigidBody = GetComponent<Rigidbody>();
+        stageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
 
         Init();
 
@@ -220,11 +226,9 @@ public class Enemy : Actor
         switch (type)
         {
             case EEnemyType.Enemy_Melee:
-                //ListAttackColliders.Add(FindInChild("AttackColliderLeftArm").GetComponent<Collider>());
                 ListAttackColliders.Add(FindInChild("AttackColliderRightArm").GetComponent<Collider>());
                 break;
             case EEnemyType.Enemy_Archer:
-                //ListAttackColliders.Add(FindInChild("AttackColliderLeftLeg").GetComponent<Collider>());
                 ListAttackColliders.Add(FindInChild("AttackColliderRightLeg").GetComponent<Collider>());
                 break;
             case EEnemyType.Enemy_Boss:
@@ -271,6 +275,8 @@ public class Enemy : Actor
     {
         _AI.Die();
         isAlive = false;
+
+        stageManager.EnemyCount--;
 
         Invoke("Kill", 1.5f);
     }
@@ -395,17 +401,18 @@ public class Enemy : Actor
 
     public void Hit()
     {
-        if (bSkillReady)
+        if (type == EEnemyType.Enemy_Melee)
         {
-            if (type == EEnemyType.Enemy_Melee)
+            if (bSkillReady)
                 meleeSkillCollider.gameObject.SetActive(true);
+            else
+                foreach (Collider coll in ListAttackColliders)
+                    coll.gameObject.SetActive(true);
         }
         else
         {
             foreach (Collider coll in ListAttackColliders)
-            {
                 coll.gameObject.SetActive(true);
-            }
         }
 
         return;
@@ -413,10 +420,13 @@ public class Enemy : Actor
 
     public void HitEnd()
     {
-        if (bSkillReady)
+        if (type == EEnemyType.Enemy_Melee)
         {
-            if (type == EEnemyType.Enemy_Melee)
+            if (bSkillReady)
                 meleeSkillCollider.gameObject.SetActive(false);
+            else
+                foreach (Collider coll in ListAttackColliders)
+                    coll.gameObject.SetActive(false);
         }
         else
         {

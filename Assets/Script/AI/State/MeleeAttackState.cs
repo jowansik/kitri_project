@@ -46,7 +46,7 @@ public class MeleeAttackState : IState
 
                         if (parent.BSkillReady)
                         {
-                            parent.AI.SkillState();
+                            parent.AI.Skill();
                         }
 
                         if (dist > parent.meleeAttackRange)

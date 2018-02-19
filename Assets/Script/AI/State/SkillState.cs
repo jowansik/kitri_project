@@ -6,7 +6,7 @@ public class SkillState : IState
 {
     public override void Enter(Enemy _parent)
     {
-        Debug.Log("스킬");
+        //Debug.Log("스킬");
 
         parent = _parent;
 

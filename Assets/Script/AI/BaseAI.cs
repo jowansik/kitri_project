@@ -20,7 +20,8 @@ public class BaseAI
     public virtual void Wander() { ChangeState(EEnemyState.State_Wander); }
     public virtual void ArrowAttack() { ChangeState(EEnemyState.State_ArrowAttack); }
     public virtual void UpperHit() { ChangeState(EEnemyState.State_UpperHit); }
-    public virtual void SkillState() { ChangeState(EEnemyState.State_Skill); }
+    public virtual void Skill() { ChangeState(EEnemyState.State_Skill); }
+    public virtual void Runaway() { ChangeState(EEnemyState.State_Runaway); }
 
     public virtual void UpdateAI()
     {

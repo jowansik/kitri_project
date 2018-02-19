@@ -5,7 +5,7 @@ using UnityEngine;
 public class IdleState : IState
 {
     private float idleTime;
-    
+
     public override void Enter(Enemy _parent)
     {
         idleTime = 0f;
@@ -33,11 +33,8 @@ public class IdleState : IState
             return;
         }
 
-        if (idleTime > parent.wanderingTime)
-        {
-            idleTime = 0f;
+        else if (idleTime > parent.wanderingTime)
             parent.AI.Wander();
-        }
     }
 
     public override IEnumerator CheckMobState()
@@ -57,7 +54,7 @@ public class IdleState : IState
                         if (dist <= parent.meleeAttackRange)
                         {
                             if (parent.BSkillReady)
-                                parent.AI.SkillState();
+                                parent.AI.Skill();
                             else
                                 parent.AI.MeleeAttack();
                         }
@@ -74,13 +71,16 @@ public class IdleState : IState
 
                         if (dist <= parent.meleeAttackRange)
                         {
-                            parent.AI.MeleeAttack();
+                            if (parent.BRunaway)
+                                parent.AI.Runaway();
+                            else
+                                parent.AI.MeleeAttack();
                         }
 
                         else if (dist < parent.arrowAttackRange && parent.BReload == false)
                         {
                             if (parent.BSkillReady)
-                                parent.AI.SkillState();
+                                parent.AI.Skill();
                             else
                                 parent.AI.ArrowAttack();
                         }
