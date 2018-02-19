@@ -265,7 +265,7 @@ public class Enemy : Actor
                 _AI.Hit();
         }
 
-        EnemyManager.Instance.LastHitMob = this;
+        EnemyManager.Instance.lastHitMob = this;
         //UpdateMobInfo();
     }
 
