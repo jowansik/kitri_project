@@ -24,7 +24,7 @@ public class EnemyManager : SingletonObejct<EnemyManager>
     [SerializeField]
     private float lastHitMobSkillPoint;
 
-    private Enemy lastHitMob = null;
+    public Enemy lastHitMob = null;
     private GameObject arrowPrefab;
     private Dictionary<EEnemyType, GameObject> dicEnemyPrefab = new Dictionary<EEnemyType, GameObject>();
     private Dictionary<EEnemyType, List<Enemy>> dicEnemyList = new Dictionary<EEnemyType, List<Enemy>>();
@@ -33,8 +33,7 @@ public class EnemyManager : SingletonObejct<EnemyManager>
     public int LastHitMobHP { get { return lastHitMobHP; } }
     public int LastHitMobMaxHP { get { return lastHitMobMaxHP; } }
     public float LastHitMobSkillPoint { get { return lastHitMobSkillPoint; } }
-
-    public Enemy LastHitMob { get { return lastHitMob; } set { lastHitMob = value; } }
+    
     public GameObject ArrowPrefab { get { return arrowPrefab; } }
     public Dictionary<EEnemyType, GameObject> DicEnemyPrefab { get { return dicEnemyPrefab; } }
     public Dictionary<EEnemyType, List<Enemy>> DicEnemyList { get { return dicEnemyList; } }

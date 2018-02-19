@@ -461,7 +461,7 @@ public class Enemy : Actor
 
     public void PlayEffect()
     {
-        if (AI.CurrentState is SkillState)
+        if (_AI.CurrentState is SkillState)
             sparkEffect.Play();
     }
     #endregion
