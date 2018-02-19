@@ -32,7 +32,7 @@ public class EnemyManager : SingletonObejct<EnemyManager>
     public int LastHitMobID { get { return lastHitMobID; } }
     public int LastHitMobHP { get { return lastHitMobHP; } }
     public int LastHitMobMaxHP { get { return lastHitMobMaxHP; } }
-    public float LastHitMobSkillPoint { get { return LastHitMobSkillPoint; } }
+    public float LastHitMobSkillPoint { get { return lastHitMobSkillPoint; } }
 
     public Enemy LastHitMob { get { return lastHitMob; } set { lastHitMob = value; } }
     public GameObject ArrowPrefab { get { return arrowPrefab; } }

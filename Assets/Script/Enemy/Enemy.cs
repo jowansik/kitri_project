@@ -193,7 +193,6 @@ public class Enemy : Actor
         nowMp = mp;
     }
 
-
     private void SetCollections()
     {
         listStates = new List<IState>
@@ -242,7 +241,6 @@ public class Enemy : Actor
             coll.gameObject.tag = "Enemy";
         }
     }
-
     #endregion
 
     #region Override
@@ -366,10 +364,10 @@ public class Enemy : Actor
     #endregion
 
     #region Public Func
-    public void InstantiateArrow()
+    public void InstantiateArrow(bool _skill = false)
     {
         GameObject newArrow = Instantiate(EnemyManager.Instance.ArrowPrefab, firePos.position, Quaternion.identity);
-        newArrow.GetComponent<Arrow>().SetArrow(((playerTR.position + arrowOffset) - firePos.position).normalized, 10, arrowPower, playerTR, arrowOffset);
+        newArrow.GetComponent<Arrow>().SetArrow(((playerTR.position + arrowOffset) - firePos.position).normalized, 10, arrowPower, playerTR, arrowOffset, _skill);
     }
 
     public bool CalcIsGround()
@@ -463,7 +461,7 @@ public class Enemy : Actor
 
     public void PlayEffect()
     {
-        if (bSkillReady)
+        if (AI.CurrentState is SkillState)
             sparkEffect.Play();
     }
     #endregion

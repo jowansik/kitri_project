@@ -32,12 +32,15 @@ public class Arrow : MonoBehaviour
         Destroy(this.gameObject);   // todo : 오브젝트 풀 만들기
     }
 
-    public void SetArrow(Vector3 _dir, float _speed, int _power, Transform _playerTR, Vector3 _arrowOffset)
+    public void SetArrow(Vector3 _dir, float _speed, int _power, Transform _playerTR, Vector3 _arrowOffset, bool _skill)
     {
         dir = _dir;
         speed = _speed;
         power = _power;
-        
+
+        if (_skill)
+            power *= 2;
+
         transform.LookAt(_playerTR.position + _arrowOffset);
         
         transform.Rotate(new Vector3(-90, 0, 0));
