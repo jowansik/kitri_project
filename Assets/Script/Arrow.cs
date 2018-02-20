@@ -27,7 +27,9 @@ public class Arrow : MonoBehaviour
             return;
 
         if (other.tag == "Player")
-            other.GetComponent<Actor>().onDamaged(power);
+            other.SendMessage("onDamaged", power);
+
+        // other.GetComponent<Actor>().onDamaged(power);
 
         Destroy(this.gameObject);   // todo : 오브젝트 풀 만들기
     }
@@ -42,7 +44,7 @@ public class Arrow : MonoBehaviour
             power *= 2;
 
         transform.LookAt(_playerTR.position + _arrowOffset);
-        
+
         transform.Rotate(new Vector3(-90, 0, 0));
     }
 }
