@@ -1,0 +1,42 @@
+Ctrl k,c : 주석처리
+Ctrl k,u : 주석해제
+Ctrl k,d : 정렬
+
+Ctrl k,o : 소스, 헤더파일 전환
+
+
+Crtl F7 : 현재 파일만 컴파일
+Ctrl F12 : 커서위치 내용의 선언으로 이동
+F12 : 정의로 이동
+Shift Alt F12 : 빠른기호찾기
+
+Ctrl r,r : 이름 바꾸기
+Ctrl h : 찾아 바꾸기
+Ctrl F3 : 현재 커서에 있는 문자열 찾기 (forward)
+Shift F3 : (backward)
+F3 : 찾은 문자열에 대한 다음 문자열로 이동
+
+Ctrl e or ] : 괄호 쌍 찾기
+
+
+
+
+Alt Mouse : 블록설정 (마우스)
+Ctrl Shift F8 : 블록설정 (키보드)
+블록설정 - Tab : 들여쓰기
+블록설정 - Shift Tab : 내어쓰기
+
+Ctrl Alt t : 멤버 변수, 함수 목록에 대한 팝업 창
+Ctrl Up/Down : 화면만 스크롤
+
+
+
+
+F5 : 디버그 시작
+Shift F5 : 디버그 종료
+
+F9 : 중단점 설정
+Ctrl F9 : 중단점 해제
+Ctrl Shift F9 : 모든 중단점 해제
+
+Ctrl F10 : 커서가 있는곳까지 실행
