@@ -541,7 +541,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1660194065359120
 GameObject:
   m_ObjectHideFlags: 1
@@ -1416,7 +1416,7 @@ Transform:
   m_GameObject: {fileID: 1866676284690606}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 4819318804537546}
   - {fileID: 4319590604561026}
@@ -1654,10 +1654,7 @@ MonoBehaviour:
   nowHp: 0
   nowMp: 0
   nowPower: 0
-  StatusInit: 0
-  NavTRPos: {x: 0, y: 0, z: 0}
-  transformPos: {x: 0, y: 0, z: 0}
-  localPos: {x: 0, y: 0, z: 0}
+  StatusInit: 1
   mobId: 0
   skillPoint: 0
   skillChargeTime: 5

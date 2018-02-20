@@ -412,7 +412,7 @@ public class Enemy : Actor
     {
         if (type == EEnemyType.Enemy_Melee)
         {
-            if (bSkillReady)
+            if (_AI.CurrentState is SkillState)
                 meleeSkillCollider.gameObject.SetActive(true);
             else
                 foreach (Collider coll in ListAttackColliders)
@@ -431,7 +431,7 @@ public class Enemy : Actor
     {
         if (type == EEnemyType.Enemy_Melee)
         {
-            if (bSkillReady)
+            if (_AI.CurrentState is SkillState)
                 meleeSkillCollider.gameObject.SetActive(false);
             else
                 foreach (Collider coll in ListAttackColliders)
