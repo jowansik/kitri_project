@@ -25,10 +25,7 @@ public class DieState : IState
     {
         while (parent.IsAlive == true)
         {
-            yield return new WaitForSeconds(0.2f);
-
-            // 몹 삭제
-            //EnemyManager.Instance.RemoveEnemy(parent, true);
+            yield return new WaitForSeconds(0.2f);            
         }
     }
 }

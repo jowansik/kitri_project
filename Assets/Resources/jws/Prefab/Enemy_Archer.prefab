@@ -1874,20 +1874,18 @@ MonoBehaviour:
   nowMp: 0
   nowPower: 0
   StatusInit: 0
-  NavTRPos: {x: 0, y: 0, z: 0}
-  transformPos: {x: 0, y: 0, z: 0}
-  localPos: {x: 0, y: 0, z: 0}
   mobId: 0
   skillPoint: 0
   skillChargeTime: 5
   type: 1
-  meleeAttackRange: 2
+  meleeAttackRange: 1
   arrowAttackRange: 20
   recoveryTime: 2
   aggroRadius: 5
   maxAggroRadius: 10
   wanderingTime: 2
   reloadTime: 2
+  runawayDist: 0
   physicsCollider: {fileID: 136286617519239878}
   triggerCollider: {fileID: 136585407908085082}
   sparkEffect: {fileID: 198506042407368184}
@@ -1914,7 +1912,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.15
+  m_Radius: 0.3
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &136286617519239878
 CapsuleCollider:

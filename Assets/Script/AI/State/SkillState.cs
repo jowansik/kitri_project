@@ -34,6 +34,9 @@ public class SkillState : IState
     public override void Update()
     {
         base.Update();
+
+        if (parent.type == EEnemyType.Enemy_Archer)
+            parent.LookPlayer();
     }
 
     public override IEnumerator CheckMobState()

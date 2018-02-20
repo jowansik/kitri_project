@@ -23,17 +23,12 @@ public class IdleState : IState
 
     public override void Update()
     {
-        idleTime += Time.deltaTime;
-
         if (parent.type == EEnemyType.Enemy_Archer)
-        {
-            if (idleTime > 3f)
-                parent.BRunaway = true;
-
             return;
-        }
 
-        else if (idleTime > parent.wanderingTime)
+        idleTime += Time.deltaTime;
+        
+        if (idleTime > parent.wanderingTime)
             parent.AI.Wander();
     }
 

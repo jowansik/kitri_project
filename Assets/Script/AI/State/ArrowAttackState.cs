@@ -26,14 +26,7 @@ public class ArrowAttackState : IState
     {
         base.Update();
 
-        Quaternion look = Quaternion.identity;
-        Vector3 dir = parent.PlayerTR.position - parent.NavTR.position;
-        dir.y = 0f;
-        dir = dir.normalized;
-
-        look.SetLookRotation(dir);
-
-        parent.NavTR.rotation = look;
+        parent.LookPlayer();
     }
 
     public override IEnumerator CheckMobState()
@@ -49,13 +42,8 @@ public class ArrowAttackState : IState
                 case EEnemyType.Enemy_Archer:
                     {
                         float dist = Vector3.Distance(parent.NavTR.position, parent.PlayerTR.position);
-
-                        if (dist <= parent.meleeAttackRange)
-                        {
-                            parent.AI.MeleeAttack();
-                        }
-
-                        else if (normalizedTime >= 0.9f)
+                        
+                        if (normalizedTime >= 0.9f)
                         {
                             Shoot();
                             parent.AI.Idle();
